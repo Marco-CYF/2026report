@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 臺灣職場敬業度危機分析報告 — 從「安靜崩解」到「心理契約」</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  /* === 暖色學術風配色 === */
+  :root {
+    --cream: #FBF7EE;
+    --cream-2: #F5EDD9;
+    --paper: #E8DCC4;
+    --navy: #1F4D2C;       /* 深綠 */
+    --navy-deep: #143821;
+    --navy-light: #2E6B43;
+    --coral: #C97B3D;      /* 暖橘 */
+    --coral-deep: #9C5524;
+    --amber: #D89B5A;
+    --teal: #5D8A4E;
+    --green: #3E6B3E;
+    --purple: #8A4B3A;
+    --gold: #C2A04A;
+    --ink: #3E2C1C;
+    --gray: #6B5C4A;
+    --gray-light: #B8A98E;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans TC","Source Han Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 紙紋背景效果 */
+  .paper-bg {
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(201,123,61,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(31,77,44,0.04) 0%, transparent 50%);
+  }
+  .navy-bg { background-color: var(--navy); }
+  .coral-text { color: var(--coral); }
+  .navy-text { color: var(--navy); }
+  .ink-text { color: var(--ink); }
+  /* 卡片 */
+  .card {
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(62,44,28,0.06);
+    transition: all 0.25s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 14px rgba(62,44,28,0.10);
+    transform: translateY(-2px);
+  }
+  .card-warm {
+    background: var(--cream-2);
+    border: 1px solid var(--paper);
+    border-radius: 8px;
+  }
+  /* 分隔線 */
+  .accent-bar {
+    border-left: 4px solid var(--coral);
+    padding-left: 1rem;
+  }
+  /* 數字強調 */
+  .stat-num {
+    font-family: "Georgia","Times New Roman",serif;
+    font-weight: 700;
+    color: var(--coral);
+    line-height: 1;
+  }
+
+  /* === Hero 巨型數字卡 === */
+  .hero-stats { position: relative; }
+  .hero-stats-label {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    padding: 0.4rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .hero-stat-card {
+    position: relative;
+    background: white;
+    border: 2px solid var(--paper);
+    border-radius: 14px;
+    padding: 1.75rem 1.25rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(62,44,28,0.06);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    /* 按鈕外觀重置 */
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    width: 100%;
+    display: block;
+  }
+  .hero-stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: var(--accent);
+  }
+  .hero-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(62,44,28,0.18);
+    border-color: var(--accent);
+  }
+
+  /* === 理論卡（可點擊）=== */
+  .theory-card {
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--paper);
+    transition: all 0.25s ease;
+  }
+  .theory-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(62,44,28,0.15);
+  }
+
+  /* === 中階主管統計卡（可點擊）=== */
+  .manager-stat {
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    background: white;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+  .manager-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(62,44,28,0.12);
+  }
+
+  /* === 心理契約三階段（可點擊）=== */
+  .contract-stage {
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--paper);
+    transition: all 0.25s ease;
+  }
+  .contract-stage:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(62,44,28,0.12);
+  }
+
+  /* === 相關項目（飛入面板內的跨參考）=== */
+  .related-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+  }
+  .related-item:hover {
+    background: var(--cream-2);
+    border-color: var(--coral);
+    transform: translateX(4px);
+  }
+  .related-item-label {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .related-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .related-lit {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 6px;
+  }
+  .related-lit-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-stat-highlight {
+    background: linear-gradient(135deg, #fff 0%, var(--cream-2) 100%);
+    border-color: var(--coral);
+    box-shadow: 0 4px 14px rgba(201,123,61,0.18);
+  }
+  .hero-stat-tag {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gray);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+  .hero-stat-num {
+    font-family: "Georgia","Times New Roman",serif;
+    font-size: 6.5rem;
+    font-weight: 700;
+    line-height: 0.95;
+    margin: 0.3rem 0 0.5rem;
+    letter-spacing: -0.03em;
+  }
+  .hero-stat-pct {
+    font-size: 2.8rem;
+    margin-left: 0.1rem;
+  }
+  .hero-stat-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+  }
+  .hero-stat-source {
+    font-size: 0.72rem;
+    color: var(--gray);
+    font-style: italic;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--paper);
+  }
+  @media (max-width: 768px) {
+    .hero-stat-num { font-size: 5rem; }
+    .hero-stat-pct { font-size: 2.2rem; }
+  }
+
+  /* === 飛入式新聞詳情面板 === */
+  .news-card {
+    cursor: pointer;
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    font-family: inherit;
+    color: inherit;
+  }
+  .news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(62,44,28,0.12);
+    border-color: var(--coral);
+  }
+  .news-card:hover .news-card-arrow {
+    color: var(--coral) !important;
+  }
+
+  .news-panel-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(31, 42, 28, 0);
+    z-index: 100;
+    visibility: hidden;
+    transition: background-color 0.35s ease, visibility 0s linear 0.35s;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .news-panel-overlay.open {
+    background: rgba(31, 42, 28, 0.55);
+    visibility: visible;
+    transition: background-color 0.35s ease;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .news-panel {
+    width: 100%;
+    max-width: 680px;
+    height: 100vh;
+    background: var(--cream);
+    box-shadow: -8px 0 30px rgba(0,0,0,0.18);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .news-panel-overlay.open .news-panel {
+    transform: translateX(0);
+  }
+  .news-panel-header {
+    color: white;
+    padding: 1.75rem 1.75rem 1.5rem;
+    position: relative;
+  }
+  .news-panel-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .news-panel-close:hover {
+    background: rgba(255,255,255,0.25);
+    transform: rotate(90deg);
+  }
+  .news-panel-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: white;
+    margin: 0;
+  }
+  .news-panel-subtitle {
+    font-size: 0.9rem;
+    color: var(--amber);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+  .news-panel-body {
+    padding: 1.5rem 1.75rem 3rem;
+  }
+  .news-panel-section {
+    margin-bottom: 1.75rem;
+  }
+  .news-panel-section-h {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+  .news-panel-highlight {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .news-panel-quote {
+    background: white;
+    border-left: 4px solid;
+    padding: 1.25rem 1.25rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 1px 4px rgba(62,44,28,0.05);
+  }
+  .news-panel-quote-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0;
+  }
+  .news-panel-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    background: white;
+    border: 2px solid;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+  .news-panel-link:hover {
+    background: var(--cream-2);
+    transform: translateX(3px);
+  }
+
+  /* 行動裝置：飛入面板全寬 */
+  @media (max-width: 640px) {
+    .news-panel { max-width: 100%; }
+    .news-panel-header { padding: 1.25rem 1.25rem 1.1rem; }
+    .news-panel-body { padding: 1.25rem 1.25rem 2.5rem; }
+    .news-panel-title { font-size: 1.15rem; }
+  }
+  /* 章節 H2 */
+  .section-h {
+    color: var(--navy);
+    font-weight: 700;
+    border-bottom: 2px solid var(--coral);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  /* 章節 H3 */
+  .sub-h {
+    color: var(--navy);
+    font-weight: 600;
+    position: relative;
+    padding-left: 0.85rem;
+  }
+  .sub-h::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    width: 4px;
+    background: var(--coral);
+    border-radius: 2px;
+  }
+  /* ===== 上方固定導覽 ===== */
+  .topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--paper);
+    box-shadow: 0 2px 12px rgba(62, 44, 28, 0.06);
+  }
+  .topnav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.55rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .topnav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    padding-right: 0.85rem;
+    border-right: 1px solid var(--paper);
+  }
+  .topnav-brand-tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    padding: 0.18rem 0.5rem;
+    border-radius: 4px;
+  }
+  .topnav-brand-title {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .topnav-brand-main {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .topnav-brand-sub {
+    font-size: 0.66rem;
+    color: var(--coral);
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .topnav-menu {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .topnav-menu::-webkit-scrollbar { height: 4px; }
+  .topnav-menu::-webkit-scrollbar-track { background: transparent; }
+  .topnav-menu::-webkit-scrollbar-thumb { background: var(--paper); border-radius: 4px; }
+  .topnav-meta {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.65rem;
+    font-size: 0.72rem;
+    color: var(--gray);
+    padding-left: 0.85rem;
+    border-left: 1px solid var(--paper);
+  }
+  .topnav-meta span { white-space: nowrap; }
+  .topnav-toggle {
+    display: none;
+    flex-shrink: 0;
+    background: var(--navy);
+    color: white;
+    border: 0;
+    padding: 0.45rem 0.55rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  /* 水平導覽連結 */
+  .nav-link {
+    display: inline-block;
+    padding: 0.45rem 0.7rem;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 500;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .nav-link:hover {
+    background: var(--cream-2);
+    color: var(--navy);
+  }
+  .nav-link.active {
+    background: var(--cream-2);
+    color: var(--navy);
+    font-weight: 700;
+    border-color: var(--coral);
+  }
+
+  /* 主內容上方留空，避開固定導覽 */
+  .main-content { padding-top: 5.5rem; }
+
+  /* tab 樣式 */
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--paper);
+    background: white;
+    color: var(--gray);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover {
+    background: var(--cream-2);
+    color: var(--navy);
+  }
+  .tab-btn.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+  /* 標籤膠囊 */
+  .pill {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .pill-teal { background: rgba(93,138,78,0.15); color: var(--teal); border: 1px solid rgba(93,138,78,0.4); }
+  .pill-coral { background: rgba(201,123,61,0.15); color: var(--coral-deep); border: 1px solid rgba(201,123,61,0.4); }
+  .pill-amber { background: rgba(216,155,90,0.18); color: var(--coral-deep); border: 1px solid rgba(216,155,90,0.45); }
+  .pill-gold { background: rgba(194,160,74,0.18); color: #8a6f2a; border: 1px solid rgba(194,160,74,0.45); }
+  .pill-green { background: rgba(62,107,62,0.15); color: var(--green); border: 1px solid rgba(62,107,62,0.4); }
+  .pill-purple { background: rgba(138,75,58,0.15); color: var(--purple); border: 1px solid rgba(138,75,58,0.4); }
+  .pill-gray { background: rgba(107,92,74,0.12); color: var(--gray); border: 1px solid rgba(107,92,74,0.3); }
+
+  /* 摺疊區塊 */
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chevron { transform: rotate(180deg); }
+  .chevron { transition: transform 0.2s; }
+
+  /* 進度條 */
+  .progress-track { background: var(--paper); border-radius: 4px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  /* 動畫 */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.5s ease; }
+
+  /* 輸入框 */
+  .search-input {
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 6px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.92rem;
+    width: 100%;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(201,123,61,0.15);
+  }
+  .select-input {
+    background: white;
+    border: 1px solid var(--paper);
+    border-radius: 6px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.9rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* 卷軸 */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--cream-2); }
+  ::-webkit-scrollbar-thumb { background: var(--gray-light); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--coral); }
+
+  /* 行動裝置：上方導覽縮減 */
+  @media (max-width: 1024px) {
+    .topnav-meta { display: none; }
+  }
+  @media (max-width: 768px) {
+    .topnav-inner { padding: 0.5rem 0.85rem; gap: 0.6rem; }
+    .topnav-brand { padding-right: 0.5rem; border-right: 0; }
+    .topnav-brand-tag { display: none; }
+    .topnav-brand-main { font-size: 0.8rem; }
+    .topnav-brand-sub { display: none; }
+    .nav-link { font-size: 0.75rem; padding: 0.35rem 0.55rem; }
+    .main-content { padding-top: 4.5rem; }
+  }
+
+  /* 列印優化 */
+  @media print {
+    .no-print { display: none !important; }
+    .main-content { padding-top: 0 !important; }
+    body { background: white; }
+  }
+
+  /* ============================================================
+     Tailwind Fallback CSS — 確保 CDN 載入失敗時網頁仍可使用
+     僅定義本頁實際用到的 utility class
+     ============================================================ */
+  /* Layout: display / flex / grid */
+  .hidden { display: none; }
+  .block { display: block; }
+  .flex { display: flex; }
+  .grid { display: grid; }
+  .inline-block { display: inline-block; }
+  .fixed { position: fixed; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
+  .sticky { position: sticky; }
+  .h-screen { height: 100vh; }
+  .w-64 { width: 16rem; }
+  .top-0 { top: 0; }
+  .left-0 { left: 0; }
+  .top-4 { top: 1rem; }
+  .left-4 { left: 1rem; }
+  .z-40 { z-index: 40; }
+  .z-50 { z-index: 50; }
+  .overflow-y-auto { overflow-y: auto; }
+  .overflow-hidden { overflow: hidden; }
+  .overflow-x-auto { overflow-x: auto; }
+  .min-w-0 { min-width: 0; }
+  .max-w-6xl { max-width: 72rem; }
+  .max-w-2xl { max-width: 42rem; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
+  .flex-1 { flex: 1 1 0%; }
+  .flex-shrink-0 { flex-shrink: 0; }
+  .flex-wrap { flex-wrap: wrap; }
+  .flex-col { flex-direction: column; }
+  .items-start { align-items: flex-start; }
+  .items-center { align-items: center; }
+  .items-end { align-items: flex-end; }
+  .justify-between { justify-content: space-between; }
+  .justify-center { justify-content: center; }
+  .text-center { text-align: center; }
+  .text-left { text-align: left; }
+  .text-right { text-align: right; }
+  .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* spacing - gap */
+  .gap-2 { gap: 0.5rem; }
+  .gap-3 { gap: 0.75rem; }
+  .gap-4 { gap: 1rem; }
+  .gap-5 { gap: 1.25rem; }
+  .gap-6 { gap: 1.5rem; }
+  /* spacing - padding */
+  .p-2 { padding: 0.5rem; }
+  .p-3 { padding: 0.75rem; }
+  .p-4 { padding: 1rem; }
+  .p-5 { padding: 1.25rem; }
+  .p-6 { padding: 1.5rem; }
+  .p-8 { padding: 2rem; }
+  .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .px-4 { padding-left: 1rem; padding-right: 1rem; }
+  .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+  .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+  .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+  .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+  .pt-0\.5 { padding-top: 0.125rem; }
+  .pt-2 { padding-top: 0.5rem; }
+  .pt-3 { padding-top: 0.75rem; }
+  .pt-4 { padding-top: 1rem; }
+  .pt-8 { padding-top: 2rem; }
+  .pl-3 { padding-left: 0.75rem; }
+  .pl-6 { padding-left: 1.5rem; }
+  .pb-2 { padding-bottom: 0.5rem; }
+  .pb-3 { padding-bottom: 0.75rem; }
+  .pb-5 { padding-bottom: 1.25rem; }
+  /* spacing - margin */
+  .m-0 { margin: 0; }
+  .mb-1 { margin-bottom: 0.25rem; }
+  .mb-2 { margin-bottom: 0.5rem; }
+  .mb-3 { margin-bottom: 0.75rem; }
+  .mb-4 { margin-bottom: 1rem; }
+  .mb-5 { margin-bottom: 1.25rem; }
+  .mb-6 { margin-bottom: 1.5rem; }
+  .mb-8 { margin-bottom: 2rem; }
+  .mb-16 { margin-bottom: 4rem; }
+  .mt-0\.5 { margin-top: 0.125rem; }
+  .mt-1 { margin-top: 0.25rem; }
+  .mt-2 { margin-top: 0.5rem; }
+  .mt-3 { margin-top: 0.75rem; }
+  .mt-4 { margin-top: 1rem; }
+  .mt-5 { margin-top: 1.25rem; }
+  .mt-8 { margin-top: 2rem; }
+  .ml-64 { margin-left: 16rem; }
+  /* width / height */
+  .w-full { width: 100%; }
+  .w-3 { width: 0.75rem; }
+  .w-6 { width: 1.5rem; }
+  .w-8 { width: 2rem; }
+  .w-10 { width: 2.5rem; }
+  .w-12 { width: 3rem; }
+  .w-14 { width: 3.5rem; }
+  .h-3 { height: 0.75rem; }
+  .h-6 { height: 1.5rem; }
+  .h-8 { height: 2rem; }
+  .h-10 { height: 2.5rem; }
+  .h-12 { height: 3rem; }
+  .h-14 { height: 3.5rem; }
+  .h-full { height: 100%; }
+  /* typography */
+  .text-xs { font-size: 0.75rem; line-height: 1rem; }
+  .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-base { font-size: 1rem; line-height: 1.5rem; }
+  .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+  .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  .text-5xl { font-size: 3rem; line-height: 1; }
+  .text-6xl { font-size: 3.75rem; line-height: 1; }
+  .font-mono { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; }
+  .font-bold { font-weight: 700; }
+  .font-semibold { font-weight: 600; }
+  .font-medium { font-weight: 500; }
+  .italic { font-style: italic; }
+  .leading-tight { line-height: 1.25; }
+  .leading-snug { line-height: 1.375; }
+  .leading-relaxed { line-height: 1.625; }
+  .tracking-widest { letter-spacing: 0.1em; }
+  .opacity-70 { opacity: 0.7; }
+  .opacity-80 { opacity: 0.8; }
+  .opacity-90 { opacity: 0.9; }
+  .opacity-95 { opacity: 0.95; }
+  /* color: text */
+  .text-white { color: #fff; }
+  /* color: background */
+  .bg-white { background-color: #fff; }
+  /* border */
+  .border { border-width: 1px; border-style: solid; }
+  .border-t { border-top-width: 1px; border-top-style: solid; }
+  .border-l { border-left-width: 1px; border-left-style: solid; }
+  .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+  .border-t-0 { border-top-width: 0; }
+  .border-l-4 { border-left-width: 4px; border-left-style: solid; }
+  .rounded { border-radius: 0.25rem; }
+  .rounded-lg { border-radius: 0.5rem; }
+  .rounded-full { border-radius: 9999px; }
+  .rounded-b-lg { border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
+  .shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+  /* transition */
+  .transition { transition: all 0.2s ease; }
+  .cursor-pointer { cursor: pointer; }
+  /* hover */
+  .hover\:bg-\[var\(--cream-2\)\]:hover { background-color: var(--cream-2); }
+  .hover\:translate-y-\[-2px\]:hover { transform: translateY(-2px); }
+  /* grid columns */
+  .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  /* breakpoints - md */
+  @media (min-width: 768px) {
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .md\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .md\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .md\:col-span-2 { grid-column: span 2 / span 2; }
+    .md\:col-span-3 { grid-column: span 3 / span 3; }
+    .md\:col-span-5 { grid-column: span 5 / span 5; }
+  }
+  /* breakpoints - lg */
+  @media (min-width: 1024px) {
+    .lg\:ml-64 { margin-left: 16rem; }
+    .lg\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+    .lg\:p-6 { padding: 1.5rem; }
+    .lg\:p-8 { padding: 2rem; }
+    .lg\:p-10 { padding: 2.5rem; }
+    .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+    .lg\:pl-6 { padding-left: 1.5rem; }
+    .lg\:pt-0 { padding-top: 0; }
+    .lg\:-mx-8 { margin-left: -2rem; margin-right: -2rem; }
+    .lg\:-mb-8 { margin-bottom: -2rem; }
+    .lg\:mb-8 { margin-bottom: 2rem; }
+    .lg\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .lg\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .lg\:text-5xl { font-size: 3rem; line-height: 1; }
+    .lg\:text-6xl { font-size: 3.75rem; line-height: 1; }
+    .lg\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .lg\:text-base { font-size: 1rem; line-height: 1.5rem; }
+    .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .lg\:col-span-2 { grid-column: span 2 / span 2; }
+    .lg\:flex-row { flex-direction: row; }
+    .lg\:items-center { align-items: center; }
+    .lg\:border-t-0 { border-top-width: 0; }
+    .lg\:border-l { border-left-width: 1px; border-left-style: solid; }
+    .lg\:hidden { display: none; }
+    .lg\:block { display: block; }
+  }
+  @media (max-width: 1023px) {
+    .lg\:hidden { display: block; }
+  }
+  /* utility */
+  .space-y-1 > * + * { margin-top: 0.25rem; }
+  .space-y-2 > * + * { margin-top: 0.5rem; }
+  .space-y-2\.5 > * + * { margin-top: 0.625rem; }
+  .space-y-3 > * + * { margin-top: 0.75rem; }
+</style>
+</head>
+<body class="paper-bg">
+
+<!-- ============= 上方固定導覽 ============= -->
+<header id="topnav" class="topnav no-print">
+  <div class="topnav-inner">
+    <!-- 品牌標題（左）-->
+    <div class="topnav-brand">
+      <div class="topnav-brand-tag">HR 2026</div>
+      <div class="topnav-brand-title">
+        <span class="topnav-brand-main">臺灣職場敬業度危機</span>
+        <span class="topnav-brand-sub">安靜崩解 × 心理契約</span>
+      </div>
+    </div>
+
+    <!-- 水平選單（可橫向滑動）-->
+    <nav class="topnav-menu" id="topnavMenu">
+      <a class="nav-link active" data-target="hero" href="#hero">首頁概覽</a>
+      <a class="nav-link" data-target="status" href="#status">① 全球 × 臺灣</a>
+      <a class="nav-link" data-target="theory" href="#theory">② 三大理論</a>
+      <a class="nav-link" data-target="causes" href="#causes">③ 六類成因</a>
+      <a class="nav-link" data-target="ai-anxiety" href="#ai-anxiety">③+ AI 焦慮</a>
+      <a class="nav-link" data-target="manager" href="#manager">④ 中階主管</a>
+      <a class="nav-link" data-target="contract" href="#contract">⑤ 安靜崩解</a>
+      <a class="nav-link" data-target="literature" href="#literature">⑥ 文獻 (23)</a>
+      <a class="nav-link" data-target="news" href="#news">⑦ 新聞 (14)</a>
+      <a class="nav-link" data-target="action" href="#action">⑧ HR 行動</a>
+      <a class="nav-link" data-target="future" href="#future">⑨ 未來展望</a>
+      <a class="nav-link" data-target="conclusion" href="#conclusion">⑩ 核心結語</a>
+    </nav>
+
+    <!-- 統計（右上，桌面才顯示）-->
+    <div class="topnav-meta">
+      <span>📚 23 篇</span>
+      <span>📰 14 篇</span>
+      <span>🗂 25 分鐘</span>
+    </div>
+
+    <!-- 手機選單按鈕 -->
+    <button id="menuToggle" class="topnav-toggle" aria-label="切換選單">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============= 主內容 ============= -->
+<main class="main-content px-4 lg:px-10 py-8 max-w-6xl mx-auto">
+
+  <!-- ===== HERO / 首頁概覽 ===== -->
+  <section id="hero" class="mb-16">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-[0.3em] mb-3">HR TREND REPORT · 2026</div>
+    <h1 class="text-4xl lg:text-5xl font-bold navy-text leading-tight mb-3">
+      2026 臺灣職場<br>敬業度危機分析
+    </h1>
+    <div class="text-xl lg:text-2xl coral-text font-medium mb-4">從「安靜崩解」到「心理契約違約」</div>
+    <p class="text-[var(--gray)] italic mb-8 text-sm lg:text-base">趨勢分析 · 理論框架 · 管理因應 — 25 分鐘專業報告</p>
+
+    <!-- 三大核心數字 — 巨型版（首頁視覺主角）-->
+    <div class="hero-stats mb-10">
+      <div class="hero-stats-label">本報告的三個關鍵警訊　·　點擊任一卡片查看完整資料</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-3">
+        <!-- 21% 全球 -->
+        <button type="button" class="hero-stat-card" style="--accent: var(--coral);" onclick="openDetailPanel('stat-21')">
+          <div class="hero-stat-tag">全球敬業度</div>
+          <div class="hero-stat-num" style="color: var(--coral);">21<span class="hero-stat-pct">%</span></div>
+          <div class="hero-stat-desc">
+            <strong class="navy-text">全球僅 1/5 員工主動投入工作</strong><br>
+            <span class="text-[var(--gray)]">2025 年連續兩年下滑，創 12 年來新低</span>
+          </div>
+          <div class="hero-stat-source">Gallup 2026《全球職場現況》　·　查看詳情 →</div>
+        </button>
+        <!-- 13% 台灣 -->
+        <button type="button" class="hero-stat-card hero-stat-highlight" style="--accent: var(--coral-deep);" onclick="openDetailPanel('stat-13')">
+          <div class="hero-stat-tag" style="color: var(--coral-deep);">臺灣敬業度 ⚠</div>
+          <div class="hero-stat-num" style="color: var(--coral-deep);">13<span class="hero-stat-pct">%</span></div>
+          <div class="hero-stat-desc">
+            <strong class="navy-text">東亞六國敬業度最低</strong><br>
+            <span class="text-[var(--gray)]">在地企業面臨的人才投入危機</span>
+          </div>
+          <div class="hero-stat-source">Gallup 2026 + Mercer 白皮書　·　查看詳情 →</div>
+        </button>
+        <!-- 87% 心理風險 -->
+        <button type="button" class="hero-stat-card" style="--accent: var(--gold);" onclick="openDetailPanel('stat-87')">
+          <div class="hero-stat-tag">心理健康風險</div>
+          <div class="hero-stat-num" style="color: var(--gold);">87<span class="hero-stat-pct">%</span></div>
+          <div class="hero-stat-desc">
+            <strong class="navy-text">近 9 成台員處於中高度心理風險</strong><br>
+            <span class="text-[var(--gray)]">壓力、過勞與汙名威脅職場生產力</span>
+          </div>
+          <div class="hero-stat-source">Cheers + 健康醫療網　·　查看詳情 →</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 引言段 -->
+    <div class="card p-6 lg:p-8 mb-8 accent-bar">
+      <p class="leading-relaxed text-[var(--ink)] mb-3">
+        全球員工敬業度在 2025 年連續兩年下滑，創下 12 年來新低。蓋洛普 2026 報告以
+        <span class="font-semibold coral-text">「AI 革命中的人性面」</span>
+        為副標，揭示在科技躍進的同時，人的狀態正快速惡化。
+      </p>
+      <p class="leading-relaxed text-[var(--ink)]">
+        集體性的低敬業狀態每年造成全球約 <span class="font-bold coral-text">10 兆美元</span> 的生產力損失（CSRone 2026 最新估算），
+        對全球 GDP 的衝擊高達 9%。敬業度不再只是 HR 的 KPI，而是影響國家經濟韌性的關鍵變項。
+      </p>
+    </div>
+
+    <!-- 六大主題快速跳轉 -->
+    <h3 class="sub-h text-lg mb-4">本報告六大主題</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <a href="#status" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--teal)] text-white flex items-center justify-center font-bold">01</div>
+        <div>
+          <div class="font-semibold navy-text">全球 × 臺灣現況</div>
+          <div class="text-xs text-[var(--gray)]">Gallup 2026 雙軌下降 · 10 兆美元代價</div>
+        </div>
+      </a>
+      <a href="#causes" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--coral)] text-white flex items-center justify-center font-bold">02</div>
+        <div>
+          <div class="font-semibold navy-text">六類成因深度解析</div>
+          <div class="text-xs text-[var(--gray)]">JD-R × COR × SET 三大理論支撐</div>
+        </div>
+      </a>
+      <a href="#manager" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--purple)] text-white flex items-center justify-center font-bold">03</div>
+        <div>
+          <div class="font-semibold navy-text">中階主管危機</div>
+          <div class="text-xs text-[var(--gray)]">30→27% 風暴中心 · 情緒傳染</div>
+        </div>
+      </a>
+      <a href="#contract" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--amber)] text-white flex items-center justify-center font-bold">04</div>
+        <div>
+          <div class="font-semibold navy-text">安靜崩解 × 心理契約違約</div>
+          <div class="text-xs text-[var(--gray)]">情感承諾 → 交易關係的退化</div>
+        </div>
+      </a>
+      <a href="#literature" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--green)] text-white flex items-center justify-center font-bold">05</div>
+        <div>
+          <div class="font-semibold navy-text">文獻資料庫</div>
+          <div class="text-xs text-[var(--gray)]">20 篇文獻 · 可搜尋／篩選</div>
+        </div>
+      </a>
+      <a href="#action" class="card p-4 flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-[var(--gold)] text-white flex items-center justify-center font-bold">06</div>
+        <div>
+          <div class="font-semibold navy-text">HR 行動建議</div>
+          <div class="text-xs text-[var(--gray)]">5 大策略 · 12 項實務做法</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== ① 全球 × 臺灣現況 ===== -->
+  <section id="status" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 01</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-6">全球 × 臺灣：敬業度雙軌下降的警訊</h2>
+    <p class="text-[var(--gray)] mb-6">承接首頁的 21% / 13% / 87% 三大警訊 — 此處聚焦長期趨勢與經濟代價。</p>
+
+    <!-- 全寬圖表 -->
+    <div class="card p-6 lg:p-8 mb-6">
+      <h3 class="sub-h text-base mb-4">全球員工敬業度趨勢 2020–2025</h3>
+      <div style="height: 320px;">
+        <canvas id="trendChart"></canvas>
+      </div>
+      <p class="text-xs text-[var(--gray)] italic mt-3">
+        資料來源：Gallup (2026) State of the Global Workplace ·
+        <span class="font-semibold coral-text">關鍵轉折：2024 年起反轉下滑，2025 為 12 年新低</span>
+      </p>
+    </div>
+
+    <!-- 經濟代價橫幅 — 更新為 CSRone 最新 10 兆數字 -->
+    <div class="navy-bg text-white rounded-lg p-6 lg:p-8 mb-6">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+        <div class="flex-shrink-0">
+          <div class="text-xs text-[var(--amber)] font-semibold tracking-widest mb-2">經濟代價 · ECONOMIC COST</div>
+          <div class="stat-num text-5xl lg:text-6xl text-[var(--amber)]">$10<span class="text-2xl"> 兆</span></div>
+          <div class="text-sm opacity-90 mt-1">美元 ／ 年 · 全球生產力損失（2024）</div>
+          <div class="text-xs opacity-75 mt-2">CSRone 永續智庫 + 經理人 2026</div>
+        </div>
+        <div class="flex-1 text-sm opacity-95 leading-relaxed border-t lg:border-t-0 lg:border-l border-[var(--navy-light)] pt-4 lg:pt-0 lg:pl-6">
+          相當於對全球 GDP 約 <span class="font-bold text-[var(--amber)]">9% 衝擊</span> — 數字較 2024 早期估算的 4,380 億美元
+          <span class="font-semibold" style="color: var(--amber);">大幅升級</span>，顯示危機正在持續惡化。
+          加上 AI 引入帶來的 Techno-Insecurity，效率提升的同時敬業度更難維持——形成
+          <span class="font-bold" style="color: var(--amber);">「生產力—投入度的悖論」</span>。
+          根據經理人深度分析，95% 企業未見 AI 成效、僅 12% 員工認為 AI 真正改變工作。
+        </div>
+      </div>
+    </div>
+
+    <!-- 新增：管理階層雙重崩潰（CSRone 區域與管理者數據）-->
+    <div class="card p-5 lg:p-6 mb-6" style="background: linear-gradient(135deg, var(--cream-2) 0%, white 100%); border-left: 4px solid var(--coral);">
+      <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+        <div>
+          <div class="text-xs font-bold tracking-widest mb-1" style="color: var(--coral);">REGIONAL & MANAGER DATA · CSRone 2026</div>
+          <h4 class="font-bold navy-text text-base">CSRone 揭露的雙重崩潰：管理層 × 區域</h4>
+        </div>
+        <button type="button" class="text-xs font-semibold px-3 py-1.5 rounded" style="background: var(--coral); color: white;" onclick="openDetailPanel('manager-crisis')">查看完整分析 →</button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-2xl font-bold stat-num" style="color: var(--coral-deep);">27→22<span class="text-sm">%</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1 leading-tight">管理階層敬業度<br>單年 -5pt</div>
+        </div>
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-2xl font-bold stat-num" style="color: var(--coral);">-9<span class="text-sm">pt</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1 leading-tight">自 2022 以來<br>管理層累計下滑</div>
+        </div>
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-2xl font-bold stat-num" style="color: var(--amber);">-8<span class="text-sm">pt</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1 leading-tight">南亞管理者<br>跌幅最大區域</div>
+        </div>
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-2xl font-bold stat-num" style="color: var(--gold);">34<span class="text-sm">%</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1 leading-tight">員工進入<br>「蓬勃發展」狀態</div>
+        </div>
+      </div>
+      <p class="text-xs text-[var(--gray)] mt-3 italic">
+        管理階層 vs 基層敬業度差距已消失 — 過去「管理紅利」正在崩潰。組織扁平化是南亞跌幅最大的關鍵驅動。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== ② 三大理論框架 ===== -->
+  <section id="theory" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 02</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-6">核心理論框架快速導覽</h2>
+    <p class="text-[var(--gray)] mb-6">解釋敬業度下降的三大理論支柱 — 每一篇文獻都建立在這些基礎之上。<span class="font-semibold coral-text">點擊卡片查看完整理論說明、應用機制與相關文獻。</span></p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <!-- JD-R -->
+      <button type="button" class="card overflow-hidden text-left p-0 w-full theory-card" onclick="openDetailPanel('theory-jdr')">
+        <div class="p-5" style="background: var(--teal);">
+          <div class="text-white text-3xl font-bold tracking-widest">JD-R</div>
+          <div class="text-white text-sm font-semibold mt-1">工作要求—資源模型</div>
+          <div class="text-white text-xs italic opacity-90">Job Demands-Resources Model</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs text-[var(--teal)] font-bold mb-2">理論核心</div>
+          <p class="text-sm leading-relaxed mb-4">
+            當工作要求（負荷、壓力、情緒消耗）持續超越可用資源（支持、自主、工具），員工會走向倦怠、敬業度耗竭。
+          </p>
+          <div class="text-xs text-[var(--gray)] border-t border-[var(--paper)] pt-3 flex items-center justify-between">
+            <div>
+              <div class="font-semibold mb-1">代表文獻</div>
+              <div>Schaufeli (2004); 呂佳儀、張同廟 (2023)</div>
+            </div>
+            <span class="text-xs font-semibold" style="color: var(--teal);">查看詳情 →</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- COR -->
+      <button type="button" class="card overflow-hidden text-left p-0 w-full theory-card" onclick="openDetailPanel('theory-cor')">
+        <div class="p-5" style="background: var(--coral);">
+          <div class="text-white text-3xl font-bold tracking-widest">COR</div>
+          <div class="text-white text-sm font-semibold mt-1">資源保存理論</div>
+          <div class="text-white text-xs italic opacity-90">Conservation of Resources</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs text-[var(--coral)] font-bold mb-2">理論核心</div>
+          <p class="text-sm leading-relaxed mb-4">
+            員工會優先保護核心資源（穩定、控制、自尊）。當資源持續流失且無法補充，投入行為被抑制，員工轉為自保模式。
+          </p>
+          <div class="text-xs text-[var(--gray)] border-t border-[var(--paper)] pt-3 flex items-center justify-between">
+            <div>
+              <div class="font-semibold mb-1">代表文獻</div>
+              <div>劉庭宇、林淑慧 (2022); 盧宛榛等 (2022)</div>
+            </div>
+            <span class="text-xs font-semibold" style="color: var(--coral);">查看詳情 →</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- SET -->
+      <button type="button" class="card overflow-hidden text-left p-0 w-full theory-card" onclick="openDetailPanel('theory-set')">
+        <div class="p-5" style="background: var(--amber);">
+          <div class="text-white text-3xl font-bold tracking-widest">SET</div>
+          <div class="text-white text-sm font-semibold mt-1">社會交換理論</div>
+          <div class="text-white text-xs italic opacity-90">Social Exchange Theory</div>
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold mb-2" style="color: var(--coral-deep);">理論核心</div>
+          <p class="text-sm leading-relaxed mb-4">
+            員工與組織的關係建立在互惠基礎上。若員工感受到組織未履行承諾或支持不足，互惠循環中斷，敬業度自然下降。
+          </p>
+          <div class="text-xs text-[var(--gray)] border-t border-[var(--paper)] pt-3 flex items-center justify-between">
+            <div>
+              <div class="font-semibold mb-1">代表文獻</div>
+              <div>Saks (2006); 蕭婉鎔、莊雅嵐 (2025)</div>
+            </div>
+            <span class="text-xs font-semibold" style="color: var(--coral-deep);">查看詳情 →</span>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <p class="text-xs text-[var(--gray)] italic mt-4">
+      補充理論：SDT 自我決定理論、Technostress 理論、事件系統理論（EST）、情緒事件理論（AET）、心理契約理論
+    </p>
+  </section>
+
+  <!-- ===== ③ 六類下降成因（可互動 tab） ===== -->
+  <section id="causes" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 03</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">六類敬業度下降成因</h2>
+    <p class="text-[var(--gray)] mb-6">點擊下方標籤切換不同成因，每類附對應理論與台灣／國際實證。</p>
+
+    <!-- 六類成因雷達圖 -->
+    <div class="card p-6 mb-6">
+      <h3 class="sub-h text-base mb-4">六大成因的影響強度評估</h3>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div style="height: 320px;">
+          <canvas id="radarChart"></canvas>
+        </div>
+        <div class="space-y-2 text-sm">
+          <p class="text-[var(--gray)] italic text-xs mb-3">基於 20 篇文獻彙整評估各成因對敬業度的影響強度（1-5 級）</p>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--coral);"></span><span>工作不安全感 — 5.0 ⭐ 最高</span></div>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--amber);"></span><span>工作—生活衝突 — 4.5</span></div>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--gold);"></span><span>數位壓力 — 4.3</span></div>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--teal);"></span><span>遠距孤獨感 — 4.0</span></div>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--green);"></span><span>組織變革疲乏 — 3.8</span></div>
+          <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--purple);"></span><span>外部環境壓力 — 3.5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 切換 -->
+    <div class="flex flex-wrap gap-2 mb-5">
+      <button class="tab-btn active" data-cause="1">① 工作不安全感</button>
+      <button class="tab-btn" data-cause="2">② 工作—生活衝突</button>
+      <button class="tab-btn" data-cause="3">③ 數位壓力</button>
+      <button class="tab-btn" data-cause="4">④ 遠距孤獨</button>
+      <button class="tab-btn" data-cause="5">⑤ 變革疲乏</button>
+      <button class="tab-btn" data-cause="6">⑥ 外部環境</button>
+    </div>
+
+    <!-- Tab 內容區 -->
+    <div id="cause-panels">
+
+      <!-- ① 工作不安全感 -->
+      <div class="cause-panel" data-id="1">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--coral);">①</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">工作不安全感 Job Insecurity</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-coral">COR</span><span class="pill pill-teal">SET</span><span class="pill pill-gray">JD-R</span></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div>
+              <h4 class="text-sm font-bold coral-text mb-3">作用機制（四階段）</h4>
+              <ol class="space-y-2.5 text-sm">
+                <li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--coral)] text-white text-xs font-bold flex items-center justify-center">1</span>威脅控制感與未來可預測性</li>
+                <li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--coral)] text-white text-xs font-bold flex items-center justify-center">2</span>提高焦慮、警戒與保守反應</li>
+                <li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--coral)] text-white text-xs font-bold flex items-center justify-center">3</span>削弱信任與互惠，降低主動投入</li>
+                <li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--coral)] text-white text-xs font-bold flex items-center justify-center">4</span>員工轉為「先自保」模式</li>
+              </ol>
+            </div>
+            <div class="space-y-3">
+              <div class="card-warm p-4">
+                <div class="font-semibold text-sm navy-text mb-2">📊 台灣實證：盧宛榛等 (2022)</div>
+                <p class="text-xs leading-relaxed">基於 JD-R 模式，證實工作不安全感透過工作倦怠影響退縮行為。高組織認同可有效削弱此負面中介效果。</p>
+              </div>
+              <div class="card-warm p-4">
+                <div class="font-semibold text-sm navy-text mb-2">📊 知覺屈就：沈青慧、鄭惠玉 (2018)</div>
+                <p class="text-xs leading-relaxed">高才低就或才非所用的知覺屈就感，會顯著降低敬業貢獻，且敬業貢獻在知覺屈就與離職意圖間扮演中介角色。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">先處理安全感，再談激勵。若組織同時講願景、卻讓員工高度擔心去留，敬業度很難穩定提升。組織認同是關鍵緩衝資源，AI 轉型期尤需透明溝通。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 工作—生活衝突 -->
+      <div class="cause-panel hidden" data-id="2">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--amber);">②</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">工作—生活衝突 Work-Life Conflict</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-teal">JD-R</span><span class="pill pill-amber">角色理論</span><span class="pill pill-gold">邊界理論</span></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="text-xs font-bold text-[var(--teal)] mb-2">JD-R 觀點</div>
+              <p class="text-xs leading-relaxed">工作—生活衝突屬高需求條件，消耗精力與恢復資源。需求長期過高時，敬業度被慢慢耗竭。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="text-xs font-bold text-[var(--coral)] mb-2">角色理論觀點</div>
+              <p class="text-xs leading-relaxed">員工同時扮演多重角色（工作者、家人、照顧者）。角色期待互相衝突，壓力與分裂感上升。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="text-xs font-bold text-[var(--amber)] mb-2">邊界理論觀點</div>
+              <p class="text-xs leading-relaxed">工作侵入家庭與私人時間，心理邊界被打破，即使下班也無法完成心理抽離與恢復。</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 員工體驗：吳庭芸、林宜玄 (2023)</div>
+              <p class="text-xs leading-relaxed">針對連鎖補習班員工調查，證實良好的員工體驗對敬業度及留任意願皆有顯著正向影響，敬業度具部分中介效果。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 Z 世代安靜離職：張巧柔、陳怡靜 (2023)</div>
+              <p class="text-xs leading-relaxed">Z 世代安靜離職與內、外在工作價值觀未獲滿足有關。工作—生活邊界破壞是觸發因素之一，建議給予自主權與職涯支持。</p>
+            </div>
+          </div>
+
+          <div class="card p-4 mb-3" style="border-left: 4px solid var(--coral); background: rgba(201,123,61,0.05);">
+            <div class="font-bold text-sm coral-text mb-1">⚠ Telepressure 持續連線壓力</div>
+            <p class="text-xs leading-relaxed">通訊軟體導致的 Telepressure 與 Cyber Incivility，讓工作侵入私人時間，是 87% 台灣員工心理風險的關鍵驅動之一。</p>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">管理重點不只是「給彈性」，而是設計：明確的邊界保護制度、可中止的工作節奏、主管對非工作時間的尊重、員工體驗結構性槓桿。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 數位壓力 -->
+      <div class="cause-panel hidden" data-id="3">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--gold);">③</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">數位壓力與持續連線 Technostress</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-gold">Technostress</span><span class="pill pill-teal">JD-R</span><span class="pill pill-coral">COR</span></div>
+            </div>
+          </div>
+
+          <h4 class="text-sm font-bold coral-text mb-3">Technostress 五大構面</h4>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-5">
+            <div class="card-warm p-3 border-l-4" style="border-left-color: var(--coral);">
+              <div class="font-bold text-sm mb-1" style="color: var(--coral);">Techno-Overload</div>
+              <div class="text-xs">科技導致超負荷工作量</div>
+            </div>
+            <div class="card-warm p-3 border-l-4" style="border-left-color: var(--amber);">
+              <div class="font-bold text-sm mb-1" style="color: var(--amber);">Techno-Invasion</div>
+              <div class="text-xs">工作入侵個人生活</div>
+            </div>
+            <div class="card-warm p-3 border-l-4" style="border-left-color: var(--gold);">
+              <div class="font-bold text-sm mb-1" style="color: var(--gold);">Techno-Complexity</div>
+              <div class="text-xs">科技操作困難帶來壓力</div>
+            </div>
+            <div class="card-warm p-3 border-l-4" style="border-left-color: var(--purple);">
+              <div class="font-bold text-sm mb-1" style="color: var(--purple);">Techno-Insecurity</div>
+              <div class="text-xs">擔心被科技 / AI 取代</div>
+            </div>
+            <div class="card-warm p-3 border-l-4" style="border-left-color: var(--teal);">
+              <div class="font-bold text-sm mb-1" style="color: var(--teal);">Techno-Uncertainty</div>
+              <div class="text-xs">科技變化過快的不確定</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 國際實證：Nosrati et al. (2025)</div>
+              <p class="text-xs leading-relaxed">在餐旅業樣本中，Technostress 各構面對員工敬業度有顯著負向影響。持續連線要求（telepressure）與網路失禮（cyber incivility）是兩大關鍵需求耗損來源。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">🧠 COR 視角：數位資源耗損</div>
+              <p class="text-xs leading-relaxed">數位壓力持續消耗注意力、情緒穩定與睡眠品質。資源耗竭後，活力（Vigor）與奉獻（Dedication）等敬業度核心特質無以為繼。FOMO 與資訊焦慮加重侵蝕。</p>
+            </div>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">建立數位回應規範（非工作時間靜默政策）、非同步工作機制與訊息節流設計，比單純要求員工「自我管理」更有效。董氏基金會建議：「下班後不傳工作訊息」應成為主管示範文化。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 遠距孤獨 -->
+      <div class="cause-panel hidden" data-id="4">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--teal);">④</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">遠距／混合工作的孤獨感與低信任</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-teal">SET</span><span class="pill pill-green">SDT</span><span class="pill pill-gray">JD-R</span></div>
+            </div>
+          </div>
+
+          <h4 class="text-sm font-bold coral-text mb-3">SDT 三大需求 × 遠距工作的張力</h4>
+          <div class="space-y-3 mb-5">
+            <div class="card-warm p-4 border-l-4" style="border-left-color: var(--green);">
+              <div class="flex items-center justify-between mb-2">
+                <div class="font-bold navy-text">自主 Autonomy</div>
+                <div class="text-xs px-2 py-0.5 rounded" style="background: var(--green); color: white;">遠距提升 ✓</div>
+              </div>
+              <div class="text-xs">遠距讓員工有更多自主空間，但若監控過度則反噬</div>
+              <div class="progress-track mt-2"><div class="progress-fill" style="width: 75%; background: var(--green);"></div></div>
+            </div>
+            <div class="card-warm p-4 border-l-4" style="border-left-color: var(--amber);">
+              <div class="flex items-center justify-between mb-2">
+                <div class="font-bold navy-text">勝任 Competence</div>
+                <div class="text-xs px-2 py-0.5 rounded" style="background: var(--amber); color: white;">需主管回饋 △</div>
+              </div>
+              <div class="text-xs">遠距需要主管回饋支持，孤立感削弱成長確認感</div>
+              <div class="progress-track mt-2"><div class="progress-fill" style="width: 50%; background: var(--amber);"></div></div>
+            </div>
+            <div class="card-warm p-4 border-l-4" style="border-left-color: var(--coral);">
+              <div class="flex items-center justify-between mb-2">
+                <div class="font-bold navy-text">關係 Relatedness</div>
+                <div class="text-xs px-2 py-0.5 rounded" style="background: var(--coral); color: white;">最易受損 ⚠</div>
+              </div>
+              <div class="text-xs">遠距工作中最容易受損，孤獨感是核心風險</div>
+              <div class="progress-track mt-2"><div class="progress-fill" style="width: 30%; background: var(--coral);"></div></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 Giauque, Cornu & Pacht (2024)</div>
+              <p class="text-xs leading-relaxed">N=2,693 問卷研究：NWW（遠距／彈性工作）並不直接影響敬業度，而是透過「個人與環境適配度（P-E Fit）」產生間接影響。信任氣候與結果導向文化是關鍵調節因素。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 負責任的領導：Calluso (2025)</div>
+              <p class="text-xs leading-relaxed">透過 100 份問卷分析證實，負責任的領導能直接提升敬業度，同時透過形塑正向情緒氣候作為中介路徑，間接強化遠距員工的參與感。</p>
+            </div>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">遠距管理的核心不是監控，而是信任、回應品質、社會連結設計與情緒支持的節奏。P-E Fit 與信任氣候是關鍵干預點，過度監控會反噬自主感。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ 組織變革疲乏 -->
+      <div class="cause-panel hidden" data-id="5">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--green);">⑤</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">組織變革疲乏 Change Fatigue</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-coral">COR</span><span class="pill pill-purple">心理契約</span><span class="pill pill-green">變革理論</span></div>
+            </div>
+          </div>
+
+          <h4 class="text-sm font-bold coral-text mb-3">變革疲乏的四階段演變</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--teal);">
+              <div class="font-bold text-sm navy-text mb-1">初期</div>
+              <div class="text-xs">積極配合</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--amber);">
+              <div class="font-bold text-sm navy-text mb-1">中期</div>
+              <div class="text-xs">疲憊累積</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--coral);">
+              <div class="font-bold text-sm navy-text mb-1">後期</div>
+              <div class="text-xs">被動服從</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--coral-deep); background: rgba(201,123,61,0.1);">
+              <div class="font-bold text-sm" style="color: var(--coral-deep);">結果</div>
+              <div class="text-xs">敬業度流失</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 永續組織變革：Assi (2025)</div>
+              <p class="text-xs leading-relaxed">博士論文研究英國能源部門，發現個人因素影響變革準備度，而反覆變革失敗造成的「變革倦怠感」是敬業度下降的獨立預測因子。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 中高齡者當責緩衝：劉庭宇、林淑慧 (2022)</div>
+              <p class="text-xs leading-relaxed">「當責」能完全中介高工作強度對敬業度的負面影響——對應變革情境，賦予員工當責感是減緩疲乏的有效機制。</p>
+            </div>
+          </div>
+
+          <div class="card p-4 mb-3" style="border-left: 4px solid var(--coral); background: rgba(201,123,61,0.05);">
+            <div class="font-bold text-sm coral-text mb-1">⚠ 心理契約破壞機制</div>
+            <p class="text-xs leading-relaxed">員工期待組織在變革中提供合理說明與過渡支持。若期待落空，容易出現「我只配合，不再投入」的心態——這正是心理契約破壞的典型表徵。</p>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">變革管理若只追求推動速度而忽略溝通、參與與心理過渡，最終代價是敬業度流失。高透明度、高參與度是關鍵設計原則。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ 外部環境壓力 -->
+      <div class="cause-panel hidden" data-id="6">
+        <div class="card p-6 lg:p-8 fade-in">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0" style="background: var(--purple);">⑥</div>
+            <div>
+              <h3 class="text-xl font-bold navy-text mb-1">外部環境壓力 External Environmental Stress</h3>
+              <div class="flex gap-2 flex-wrap"><span class="pill pill-purple">EST 事件系統</span><span class="pill pill-amber">AET 情緒事件</span><span class="pill pill-coral">COR</span></div>
+            </div>
+          </div>
+
+          <h4 class="text-sm font-bold coral-text mb-3">影響路徑：外部事件 → 敬業度</h4>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-5">
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--gold);">
+              <div class="font-bold text-sm navy-text mb-1">外部破壞事件</div>
+              <div class="text-xs">氣候、空污、疫情、經濟波動</div>
+              <div class="text-xs italic mt-1" style="color: var(--gold);">EST</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--amber);">
+              <div class="font-bold text-sm navy-text mb-1">情緒反應</div>
+              <div class="text-xs">焦慮、不安、恐懼</div>
+              <div class="text-xs italic mt-1" style="color: var(--amber);">AET</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--coral);">
+              <div class="font-bold text-sm navy-text mb-1">資源耗損</div>
+              <div class="text-xs">睡眠↓、恢復能力↓</div>
+              <div class="text-xs italic mt-1" style="color: var(--coral);">COR</div>
+            </div>
+            <div class="card-warm p-3 text-center" style="border-top: 3px solid var(--coral-deep); background: rgba(201,123,61,0.1);">
+              <div class="font-bold text-sm" style="color: var(--coral-deep);">敬業度下降</div>
+              <div class="text-xs">活力↓、專注↓</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 外部事件影響：Liu et al. (2026)</div>
+              <p class="text-xs leading-relaxed">Journal of Organizational Behavior 研究運用事件系統理論（EST），證實外部破壞性事件（如空污）透過情緒路徑影響敬業度，效應不亞於工作本身因素。</p>
+            </div>
+            <div class="card-warm p-4">
+              <div class="font-semibold text-sm navy-text mb-2">📊 ESG 與員工健康：張文政、盧文民 (2025)</div>
+              <p class="text-xs leading-relaxed">企業 ESG 架構若納入員工環境體驗指標，可更有效監控外部環境對工作狀態的衝擊，將外部環境壓力管理納入 HR 風險治理。</p>
+            </div>
+          </div>
+
+          <div class="border-t border-[var(--paper)] pt-4 bg-[var(--cream-2)] -mx-6 lg:-mx-8 px-6 lg:px-8 pb-2 -mb-6 lg:-mb-8 mt-2 rounded-b-lg">
+            <div class="font-bold coral-text text-sm mb-2 mt-3">💡 管理意涵</div>
+            <p class="text-sm leading-relaxed">ESG 與職場健康管理不能只看組織內部，也要把氣候、空污與環境擾動納入員工體驗與 HR 風險管理框架。氣候焦慮應提前部署支持方案。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ③+ AI 焦慮專題（新增）===== -->
+  <section id="ai-anxiety" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">EMERGING ISSUE · 2026</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">AI 焦慮：Techno-Insecurity 的爆發</h2>
+    <p class="text-[var(--gray)] mb-6">2026 年新興職場焦慮 — 投入與焦慮並存的「生產力—投入度悖論」。<span class="font-semibold coral-text">點擊下方任一數據查看完整分析。</span></p>
+
+    <!-- AI 焦慮主視覺 -->
+    <button type="button" class="card overflow-hidden w-full text-left p-0 mb-6 hero-stat-card" style="--accent: var(--gold); padding: 0; text-align: left; border-radius: 12px;" onclick="openDetailPanel('ai-anxiety')">
+      <div class="p-6 lg:p-8" style="background: linear-gradient(135deg, #fff 0%, var(--cream-2) 100%);">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+          <div class="flex-shrink-0">
+            <div class="text-xs font-bold tracking-widest mb-2" style="color: var(--gold);">AI ANXIETY · 經理人 2026</div>
+            <div class="stat-num text-5xl lg:text-6xl" style="color: var(--gold);">23<span class="text-2xl">%</span></div>
+            <div class="text-sm text-[var(--gray)] mt-1">已導入 AI 企業，員工擔心被淘汰</div>
+          </div>
+          <div class="flex-1 text-sm leading-relaxed border-t lg:border-t-0 lg:border-l border-[var(--paper)] pt-4 lg:pt-0 lg:pl-6">
+            <strong class="navy-text">AI 引入正在加劇 Techno-Insecurity</strong>，但矛盾的是：
+            <span class="font-semibold" style="color: var(--coral-deep);">95% 企業未見 AI 成效</span>，
+            僅 12% 員工認為 AI 真正改變工作。投入與焦慮並存，形成
+            <span class="font-bold" style="color: var(--coral-deep);">「生產力—投入度的悖論」</span>。
+            Gallup 副標「AI 革命中的人性面」直指此問題核心。
+          </div>
+          <div class="text-xs font-semibold flex-shrink-0" style="color: var(--gold);">查看詳情 →</div>
+        </div>
+      </div>
+    </button>
+
+    <!-- 產業別 AI 焦慮數據 -->
+    <h3 class="sub-h text-base mb-4">產業別 AI 焦慮：金融、保險、科技業最深</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="card p-4 text-center">
+        <div class="text-xs font-bold mb-2" style="color: var(--gold);">金融業</div>
+        <div class="stat-num text-3xl" style="color: var(--coral-deep);">32<span class="text-base">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">員工深感 AI 威脅</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-xs font-bold mb-2" style="color: var(--gold);">保險業</div>
+        <div class="stat-num text-3xl" style="color: var(--coral-deep);">32<span class="text-base">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">同等高焦慮水準</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-xs font-bold mb-2" style="color: var(--gold);">科技業</div>
+        <div class="stat-num text-3xl" style="color: var(--coral);">31<span class="text-base">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">原以為的安全產業</div>
+      </div>
+      <div class="card p-4 text-center" style="background: var(--cream-2);">
+        <div class="text-xs font-bold mb-2 text-[var(--gray)]">全球平均</div>
+        <div class="stat-num text-3xl" style="color: var(--amber);">18<span class="text-base">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">美國一般員工基準</div>
+      </div>
+    </div>
+
+    <!-- 世代福祉需求差異 -->
+    <h3 class="sub-h text-base mb-4">世代福祉需求差異（經理人 2026）</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card p-5" style="border-top: 3px solid var(--teal);">
+        <div class="font-bold text-base navy-text mb-2">Z 世代</div>
+        <div class="text-xs italic mb-2" style="color: var(--teal);">1997 後出生</div>
+        <p class="text-sm leading-relaxed">最看重 <strong style="color: var(--teal);">工作與生活平衡</strong>。對「彈性安排」「邊界保護」期待最高，是「安靜離職」的主要族群。</p>
+      </div>
+      <div class="card p-5" style="border-top: 3px solid var(--amber);">
+        <div class="font-bold text-base navy-text mb-2">千禧世代</div>
+        <div class="text-xs italic mb-2" style="color: var(--amber);">1981–1996</div>
+        <p class="text-sm leading-relaxed">講求 <strong style="color: var(--amber);">工作福利與職涯發展</strong>。重視組織提供的成長機會與職涯路徑清晰度。</p>
+      </div>
+      <div class="card p-5" style="border-top: 3px solid var(--coral);">
+        <div class="font-bold text-base navy-text mb-2">X 世代</div>
+        <div class="text-xs italic mb-2" style="color: var(--coral);">1965–1980</div>
+        <p class="text-sm leading-relaxed">最需要 <strong style="color: var(--coral);">醫療保健福利</strong>。面臨人生重大變動時（疾病、家人照顧），實質支持比願景更重要。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ④ 中階主管危機 ===== -->
+  <section id="manager" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SPECIAL FOCUS · 04</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">中階主管危機：敬業度流失的風暴中心</h2>
+    <p class="text-[var(--gray)] mb-6">Gallup 2026：管理者敬業度從 30% 跌至 27%，是整體下降的主因。<span class="font-semibold coral-text">點擊下方任一數據查看完整分析（含 Kincentric 2022 早期警訊與經理人深度報導）。</span></p>
+
+    <!-- 三組數據（可點擊）-->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <button type="button" class="card p-5 border-l-4 text-left manager-stat" style="border-left-color: var(--coral-deep);" onclick="openDetailPanel('manager-crisis')">
+        <div class="text-xs text-[var(--gray)] font-semibold mb-1">管理者敬業度</div>
+        <div class="stat-num text-3xl" style="color: var(--coral-deep);">30→27<span class="text-lg">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">全球管理者下降 3 個百分點</div>
+        <div class="text-xs font-semibold mt-2" style="color: var(--coral-deep);">查看詳情 →</div>
+      </button>
+      <button type="button" class="card p-5 border-l-4 text-left manager-stat" style="border-left-color: var(--coral);" onclick="openDetailPanel('manager-crisis')">
+        <div class="text-xs text-[var(--gray)] font-semibold mb-1">35 歲以下主管</div>
+        <div class="stat-num text-3xl" style="color: var(--coral);">−5<span class="text-lg">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">年輕世代管理者更易倦怠</div>
+        <div class="text-xs font-semibold mt-2" style="color: var(--coral);">查看詳情 →</div>
+      </button>
+      <button type="button" class="card p-5 border-l-4 text-left manager-stat" style="border-left-color: var(--amber);" onclick="openDetailPanel('manager-crisis')">
+        <div class="text-xs text-[var(--gray)] font-semibold mb-1">女性主管</div>
+        <div class="stat-num text-3xl" style="color: var(--amber);">−7<span class="text-lg">%</span></div>
+        <div class="text-xs text-[var(--gray)] mt-1">兼顧多重角色壓力最大</div>
+        <div class="text-xs font-semibold mt-2" style="color: var(--amber);">查看詳情 →</div>
+      </button>
+    </div>
+
+    <!-- 雙向夾擠視覺化 -->
+    <div class="card p-6 lg:p-8 mb-6">
+      <h3 class="sub-h text-base mb-5">JD-R：中階主管的雙向夾擠</h3>
+
+      <div class="space-y-1 max-w-2xl mx-auto">
+        <!-- 上層壓力 -->
+        <div class="p-4 rounded-lg" style="background: var(--coral-deep); color: white;">
+          <div class="font-bold mb-1">▲ 來自高層的壓力</div>
+          <div class="text-sm opacity-95">策略壓力 × 組織變革 × AI 工具引入 × 行政負荷</div>
+        </div>
+        <!-- 箭頭 -->
+        <div class="flex justify-center py-1"><span style="color: var(--coral-deep);">▼</span></div>
+        <!-- 中階主管 -->
+        <div class="p-5 rounded-lg" style="background: var(--navy); color: white; border: 2px solid var(--amber);">
+          <div class="text-xl font-bold text-center" style="color: var(--amber);">中階主管</div>
+          <div class="text-center text-sm opacity-90 mt-1">資源耗竭 → 情緒消耗 → 灰心喪志</div>
+        </div>
+        <!-- 箭頭 -->
+        <div class="flex justify-center py-1"><span style="color: var(--teal);">▲</span></div>
+        <!-- 下層期待 -->
+        <div class="p-4 rounded-lg" style="background: var(--teal); color: white;">
+          <div class="font-bold mb-1">▼ 來自基層的期待</div>
+          <div class="text-sm opacity-95">福祉維護 × 彈性工作需求 × 個人發展支持</div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5 font-bold italic" style="color: var(--coral-deep);">
+        → 角色衝突 → 情緒傳染 → 基層敬業度斷崖下跌
+      </div>
+    </div>
+
+    <!-- 情緒傳染機制 -->
+    <div class="card p-6 mb-4">
+      <h3 class="sub-h text-base mb-3">情緒傳染（Emotional Contagion）機制</h3>
+      <p class="text-sm leading-relaxed">
+        領導者的情緒具高度傳染性。主管灰心喪志成為負向情緒調節變項 → 基層員工活力（Vigor）與奉獻（Dedication）斷崖式下跌。這是 JD-R 模型中
+        <span class="font-semibold coral-text">「需求溢出效應」</span>的典型案例。非管理職敬業度維持 18% 不變；管理者顯著下滑，
+        <span class="font-semibold">年輕／女性主管分化最嚴重</span>。
+      </p>
+    </div>
+
+    <div class="card p-4" style="border-left: 4px solid var(--amber); background: rgba(216,155,90,0.08);">
+      <div class="font-bold coral-text text-sm mb-2">💡 管理意涵：投資中階主管</div>
+      <p class="text-sm leading-relaxed">重新設計管理者角色邊界、減少行政負擔、提供教練支持（人際溝通能力培訓）、建立幸福感監測機制。中階主管的投入才是整體敬業度回升的槓桿支點。</p>
+    </div>
+  </section>
+
+  <!-- ===== ⑤ 安靜崩解 × 心理契約 ===== -->
+  <section id="contract" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SPECIAL FOCUS · 05</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">安靜崩解 vs 安靜離職 與心理契約違約</h2>
+    <p class="text-[var(--gray)] mb-6">從個人防禦到集體失能 · 從情感性承諾到交易性關係</p>
+
+    <!-- 對比表 -->
+    <div class="card overflow-hidden mb-6">
+      <h3 class="sub-h text-base p-5 pb-3">兩種職場退縮現象的本體論差異</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr style="background: var(--navy); color: white;">
+              <th class="p-3 text-left text-xs font-bold">特徵</th>
+              <th class="p-3 text-left text-xs font-bold" style="background: var(--amber);">安靜離職 Quiet Quitting</th>
+              <th class="p-3 text-left text-xs font-bold" style="background: var(--coral-deep);">安靜崩解 Quiet Crumbling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: var(--cream-2);">
+              <td class="p-3 font-semibold navy-text">本質</td>
+              <td class="p-3">維護心理邊界的個體防禦</td>
+              <td class="p-3">組織文化的本體論危機</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold navy-text">表現</td>
+              <td class="p-3">只做最低限度工作</td>
+              <td class="p-3">正常出勤但內心掙扎，不表達困難</td>
+            </tr>
+            <tr style="background: var(--cream-2);">
+              <td class="p-3 font-semibold navy-text">可察覺性</td>
+              <td class="p-3">相對容易（績效明顯下滑）</td>
+              <td class="p-3">極難察覺（短期績效未必下降）</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold navy-text">心理契約</td>
+              <td class="p-3">部分違約，尚有底線</td>
+              <td class="p-3">全面違約，情感→交易關係</td>
+            </tr>
+            <tr style="background: var(--cream-2);">
+              <td class="p-3 font-semibold navy-text">干預難度</td>
+              <td class="p-3">低 — 中</td>
+              <td class="p-3">中 — 高（隱蔽性強）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 心理契約三階段 -->
+    <h3 class="sub-h text-base mb-4">心理契約違約：從情感承諾退化為交易關係（SET）</h3>
+    <p class="text-xs text-[var(--gray)] mb-3 italic">點擊任一階段查看完整理論與 Mercer 2024 量化證據</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <button type="button" class="card overflow-hidden text-left p-0 w-full contract-stage" onclick="openDetailPanel('contract-breach')">
+        <div class="p-3 text-white font-bold" style="background: var(--green);">情感性承諾</div>
+        <div class="p-4">
+          <div class="text-xs italic mb-2" style="color: var(--green);">Affective Commitment</div>
+          <p class="text-sm leading-relaxed">員工認同組織使命，主動付出超出預期的努力，工作充滿意義感。</p>
+        </div>
+      </button>
+      <button type="button" class="card overflow-hidden text-left p-0 w-full contract-stage" onclick="openDetailPanel('contract-breach')">
+        <div class="p-3 text-white font-bold" style="background: var(--amber);">心理契約違約</div>
+        <div class="p-4">
+          <div class="text-xs italic mb-2" style="color: var(--amber);">Psychological Contract Breach</div>
+          <p class="text-sm leading-relaxed">組織未履行隱性承諾（穩定、公平、成長支持），互惠循環中斷。</p>
+        </div>
+      </button>
+      <button type="button" class="card overflow-hidden text-left p-0 w-full contract-stage" onclick="openDetailPanel('contract-breach')">
+        <div class="p-3 text-white font-bold" style="background: var(--coral-deep);">交易性關係</div>
+        <div class="p-4">
+          <div class="text-xs italic mb-2" style="color: var(--coral-deep);">Transactional Exchange Only</div>
+          <p class="text-sm leading-relaxed">員工僅交付合約最低義務，情感歸零，敬業度「專注」特質消失。</p>
+        </div>
+      </button>
+    </div>
+
+    <!-- 新增：Mercer 2024 量化證據 -->
+    <div class="card p-5 lg:p-6 mb-4" style="background: linear-gradient(135deg, var(--cream-2) 0%, white 100%); border: 2px solid var(--amber);">
+      <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+        <div>
+          <div class="text-xs font-bold tracking-widest mb-1" style="color: var(--amber);">QUANTITATIVE EVIDENCE</div>
+          <h4 class="font-bold navy-text text-base">心理契約違約的量化證據（Mercer 2024）</h4>
+        </div>
+        <button type="button" class="text-xs font-semibold px-3 py-1.5 rounded" style="background: var(--amber); color: white;" onclick="openDetailPanel('contract-breach')">查看完整分析 →</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-3xl font-bold stat-num" style="color: var(--coral-deep);">42<span class="text-base">%</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1">員工表示雇主未滿足需求</div>
+          <div class="text-xs font-semibold mt-1" style="color: var(--coral-deep);">前年僅 19% — 暴增 2 倍</div>
+        </div>
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-3xl font-bold stat-num" style="color: var(--amber);">80→69<span class="text-base">%</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1">信任雇主「為員工做對事」</div>
+          <div class="text-xs font-semibold mt-1" style="color: var(--amber);">11 個百分點滑落</div>
+        </div>
+        <div class="text-center p-3 rounded" style="background: white;">
+          <div class="text-3xl font-bold stat-num" style="color: var(--gold);">78→69<span class="text-base">%</span></div>
+          <div class="text-xs text-[var(--gray)] mt-1">信任雇主「為社會做對事」</div>
+          <div class="text-xs font-semibold mt-1" style="color: var(--gold);">9 個百分點滑落</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-4" style="border-left: 4px solid var(--coral); background: rgba(201,123,61,0.05);">
+      <div class="font-bold text-sm coral-text mb-2">⚠ 安靜崩解的早期徵兆（TVBS × 104 人力銀行 林書伃）</div>
+      <p class="text-sm leading-relaxed">疲倦↑、頻繁請假、高績效者失常、平時開朗的員工熱情減退。比安靜離職更隱蔽，殺傷力也更大——需建立心理脈搏監測機制。</p>
+    </div>
+  </section>
+
+  <!-- ===== ⑥ 文獻資料庫 ===== -->
+  <section id="literature" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 06 · DATABASE</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">文獻資料庫</h2>
+    <p class="text-[var(--gray)] mb-6">綜整 23 篇文獻：台灣碩博士研究 12 篇 + 國際學術期刊／顧問公司報告 11 篇 · 可搜尋／篩選</p>
+
+    <!-- 篩選列 -->
+    <div class="card p-4 mb-5">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+        <div class="md:col-span-5">
+          <label class="block text-xs font-semibold text-[var(--gray)] mb-1">關鍵字搜尋</label>
+          <input id="litSearch" type="text" class="search-input" placeholder="作者、標題、關鍵字...">
+        </div>
+        <div class="md:col-span-3">
+          <label class="block text-xs font-semibold text-[var(--gray)] mb-1">語言</label>
+          <select id="litLang" class="select-input w-full">
+            <option value="">全部</option>
+            <option value="zh">中文</option>
+            <option value="en">英文</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-[var(--gray)] mb-1">年份</label>
+          <select id="litYear" class="select-input w-full">
+            <option value="">全部</option>
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2006">2006</option>
+            <option value="2004">2004</option>
+          </select>
+        </div>
+        <div class="md:col-span-2 flex items-end">
+          <button id="litReset" class="select-input w-full hover:bg-[var(--cream-2)] cursor-pointer text-center">重設</button>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t border-[var(--paper)]">
+        <span class="text-xs text-[var(--gray)] font-semibold py-1">主題標籤：</span>
+        <button class="pill pill-coral cursor-pointer tag-filter" data-tag="JD-R">JD-R</button>
+        <button class="pill pill-teal cursor-pointer tag-filter" data-tag="COR">COR</button>
+        <button class="pill pill-amber cursor-pointer tag-filter" data-tag="SET">SET</button>
+        <button class="pill pill-purple cursor-pointer tag-filter" data-tag="心理契約">心理契約</button>
+        <button class="pill pill-green cursor-pointer tag-filter" data-tag="CSR">CSR / ESG</button>
+        <button class="pill pill-gold cursor-pointer tag-filter" data-tag="安靜離職">安靜離職</button>
+        <button class="pill pill-gray cursor-pointer tag-filter" data-tag="敬業度">敬業度</button>
+      </div>
+      <div class="text-xs text-[var(--gray)] mt-2"><span id="litCount">23</span> / 23 篇文獻</div>
+    </div>
+
+    <!-- 文獻清單 -->
+    <div id="literatureList" class="space-y-3"></div>
+  </section>
+
+  <!-- ===== ⑦ 新聞來源 ===== -->
+  <section id="news" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 07</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">新聞資料庫</h2>
+    <p class="text-[var(--gray)] mb-6">14 篇關鍵新聞報導 · 涵蓋全球趨勢、台灣本土、顧問公司報告與 HR 實務觀點 · <span class="font-semibold coral-text">點擊任一卡片查看完整內容</span></p>
+
+    <div id="newsList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+
+    <!-- 四大主題交織 -->
+    <div class="card p-6 lg:p-8" style="background: var(--navy); color: white;">
+      <h3 class="font-bold mb-1" style="color: var(--amber);">新聞事件脈絡：四大因素交織出敬業度危機</h3>
+      <p class="text-xs opacity-80 italic mb-4">基於 Gallup 2026 與 TVBS 等報導</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="p-3 rounded" style="background: var(--navy-light); border-left: 3px solid var(--coral);">
+          <div class="font-semibold text-sm mb-1" style="color: var(--coral);">數位壓力 × 生活衝突</div>
+          <div class="text-xs opacity-90">Cheers 調查：87% 心理風險。Telepressure 與 Cyber Incivility 蠶食敬業度。</div>
+        </div>
+        <div class="p-3 rounded" style="background: var(--navy-light); border-left: 3px solid var(--amber);">
+          <div class="font-semibold text-sm mb-1" style="color: var(--amber);">中階主管 × 變革疲乏</div>
+          <div class="text-xs opacity-90">TechNews：主管「灰心喪志」是主因，情緒傳染引發基層抽離（JD-R）。</div>
+        </div>
+        <div class="p-3 rounded" style="background: var(--navy-light); border-left: 3px solid var(--gold);">
+          <div class="font-semibold text-sm mb-1" style="color: var(--gold);">工作不安全感 × 心理契約</div>
+          <div class="text-xs opacity-90">AI 技術與組織重組讓控制感、互惠感崩潰，情感承諾退化為交易關係。</div>
+        </div>
+        <div class="p-3 rounded" style="background: var(--navy-light); border-left: 3px solid var(--teal);">
+          <div class="font-semibold text-sm mb-1" style="color: #8db86a;">遠距孤獨 × 環境焦慮</div>
+          <div class="text-xs opacity-90">HealthNews：環境擾動（空污、氣候焦慮）成隱形殺手，透過睡眠與焦慮拉低敬業度。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ⑧ HR 行動框架 ===== -->
+  <section id="action" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 08</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">HR 行動框架：五大策略 × 12 項實務做法</h2>
+    <p class="text-[var(--gray)] mb-6">從學術理論到實踐方案 · 點擊展開查看具體做法</p>
+
+    <div class="space-y-3" id="actionList"></div>
+  </section>
+
+  <!-- ===== ⑨ 未來展望 ===== -->
+  <section id="future" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 09</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-2">未來展望：2026 之後的職場敬業度趨勢</h2>
+    <p class="text-[var(--gray)] mb-6">三大關鍵預判 × 組織能力升級方向</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+      <div class="card overflow-hidden">
+        <div class="p-5 text-white" style="background: var(--coral);">
+          <div class="text-3xl font-bold mb-2">01</div>
+          <div class="font-bold">AI 共存時代的「人本敬業度」重塑</div>
+        </div>
+        <div class="p-5">
+          <ul class="space-y-2 text-sm">
+            <li class="flex gap-2"><span class="coral-text">•</span><span>Techno-Insecurity 將取代傳統工作不安全感成為主驅動</span></li>
+            <li class="flex gap-2"><span class="coral-text">•</span><span>「情感勞動」與「創造性判斷」成為敬業度核心戰場</span></li>
+            <li class="flex gap-2"><span class="coral-text">•</span><span>HR 需建立 AI 共存的角色再設計與技能對映機制</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="p-5 text-white" style="background: var(--teal);">
+          <div class="text-3xl font-bold mb-2">02</div>
+          <div class="font-bold">中階主管角色重新定義</div>
+        </div>
+        <div class="p-5">
+          <ul class="space-y-2 text-sm">
+            <li class="flex gap-2"><span style="color: var(--teal);">•</span><span>「教練式領導」取代「監督式管理」成為新標準</span></li>
+            <li class="flex gap-2"><span style="color: var(--teal);">•</span><span>管理者幸福感監測機制將成為 ESG 治理新指標</span></li>
+            <li class="flex gap-2"><span style="color: var(--teal);">•</span><span>管理層 EAP 與心理契約再校正將成為投資焦點</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="p-5 text-white" style="background: var(--amber);">
+          <div class="text-3xl font-bold mb-2">03</div>
+          <div class="font-bold">心理健康成為 ESG 與 HR 治理核心</div>
+        </div>
+        <div class="p-5">
+          <ul class="space-y-2 text-sm">
+            <li class="flex gap-2"><span style="color: var(--amber);">•</span><span>員工心理風險指標將被納入企業永續報告</span></li>
+            <li class="flex gap-2"><span style="color: var(--amber);">•</span><span>氣候焦慮、AI 焦慮等外部壓力進入正式治理框架</span></li>
+            <li class="flex gap-2"><span style="color: var(--amber);">•</span><span>預防性心理資本投資取代事後諮商成為主流</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="navy-bg p-5 lg:p-6 rounded-lg text-center" style="border: 2px solid var(--amber);">
+      <p class="font-bold italic" style="color: var(--amber); font-size: 1.05rem;">
+        從「員工協助方案」到「組織心理資本治理」 — 敬業度管理將從成本中心轉化為核心競爭力
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== ⑩ 核心結語 ===== -->
+  <section id="conclusion" class="mb-16 pt-8 border-t border-[var(--paper)]">
+    <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">CONCLUSION</div>
+    <h2 class="section-h text-2xl lg:text-3xl mb-6">核心結語</h2>
+
+    <div class="navy-bg p-8 lg:p-10 rounded-lg text-white mb-6">
+      <div class="text-3xl lg:text-4xl font-bold leading-snug mb-5">
+        敬業度下降，不是員工的問題，<br>
+        而是系統性資源消耗的<span style="color: var(--amber);">組織病徵</span>。
+      </div>
+      <div class="text-sm opacity-90 leading-relaxed">
+        當全球僅 21% 的員工主動投入工作、台灣僅 13% — 每一個百分點的提升，
+        都代表龐大的人力資本回收與組織競爭力重建。
+      </div>
+    </div>
+
+    <h3 class="sub-h text-lg mb-4">三項行動原則</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div class="card p-5 text-center">
+        <div class="w-12 h-12 rounded-full bg-[var(--amber)] text-white text-xl font-bold flex items-center justify-center mx-auto mb-3">1</div>
+        <div class="font-semibold navy-text">理解作用機制</div>
+        <div class="text-xs text-[var(--gray)] mt-1">六類成因的具體運作方式</div>
+      </div>
+      <div class="card p-5 text-center">
+        <div class="w-12 h-12 rounded-full bg-[var(--amber)] text-white text-xl font-bold flex items-center justify-center mx-auto mb-3">2</div>
+        <div class="font-semibold navy-text">識別共同邏輯</div>
+        <div class="text-xs text-[var(--gray)] mt-1">底層的資源消耗共通模式</div>
+      </div>
+      <div class="card p-5 text-center">
+        <div class="w-12 h-12 rounded-full bg-[var(--amber)] text-white text-xl font-bold flex items-center justify-center mx-auto mb-3">3</div>
+        <div class="font-semibold navy-text">制度層介入</div>
+        <div class="text-xs text-[var(--gray)] mt-1">系統設計層面，而非個人激勵</div>
+      </div>
+    </div>
+
+    <div class="text-center text-sm text-[var(--gray)] italic pt-4 border-t border-[var(--paper)]">
+      ── HR Research Team · 2026 · 基於 20 篇學術文獻與 8 篇新聞報導綜整 ──
+    </div>
+  </section>
+
+</main>
+
+<!-- ============= 飛入式新聞詳情面板 ============= -->
+<div id="newsPanelOverlay" class="news-panel-overlay no-print" onclick="if(event.target===this)closeNewsPanel()">
+  <aside id="newsPanel" class="news-panel" role="dialog" aria-label="新聞詳情">
+    <!-- 內容由 JS 動態填入 -->
+  </aside>
+</div>
+
+<script>
+// ============= 文獻資料 =============
+const LITERATURE = [
+  { id: 1, title: "永續共好？企業社會責任對半導體製造業關鍵人才組織認同、離職傾向之影響", authors: "蕭婉鎔、莊雅嵐", year: 2025, lang: "zh", tags: ["CSR","敬業度","SET"], summary: "探討企業社會責任對半導體製造業關鍵人才的影響。實證發現落實「內部企業社會責任」能顯著提升關鍵人才的組織認同並降低離職傾向。" },
+  { id: 2, title: "運用專案管理知識建構企業ESG標準架構永續報告書之研究", authors: "張文政、盧文民", year: 2025, lang: "zh", tags: ["CSR","ESG"], summary: "為解決市場永續報告書編製混亂的問題，導入專案管理知識體系（WBS、ARCI）與國際規範（GRI、SASB），建構企業 ESG 標準化框架與監控指標。" },
+  { id: 3, title: "工作價值觀、敬業度與組織承諾關係之研究", authors: "呂佳儀、張同廟", year: 2023, lang: "zh", tags: ["敬業度","JD-R"], summary: "探討工作價值觀、敬業度與組織承諾的作用機制。發現工作價值觀正向影響敬業度，且敬業度在兩者間扮演「完全中介」的關鍵角色。" },
+  { id: 4, title: "Z 世代為什麼安靜離職？質性研究之初探", authors: "張巧柔、陳怡靜", year: 2023, lang: "zh", tags: ["安靜離職","Z世代"], summary: "透過深度訪談探究 Z 世代「安靜離職」的背後成因。研究指出此現象與其內、外在工作價值觀未獲滿足有關，建議企業給予自主權與適切的職涯發展。" },
+  { id: 5, title: "員工體驗與敬業度對留任意願之影響", authors: "吳庭芸、林宜玄", year: 2023, lang: "zh", tags: ["敬業度","員工體驗"], summary: "針對連鎖電腦補習班員工進行調查，證實良好的員工體驗對敬業度及留任意願皆有顯著正向影響，且敬業度在其中具有部分中介效果。" },
+  { id: 6, title: "以當責成就資源保存的效果：解析中高齡者工作強度、當責與工作敬業之關係", authors: "劉庭宇、林淑慧", year: 2022, lang: "zh", tags: ["COR","當責","中高齡"], summary: "基於資源保存理論，探討 50 歲以上中高齡工作者面臨高工作強度時的心理轉化。證實「當責」能發揮完全中介效果，將壓力轉化為成就與敬業度。" },
+  { id: 7, title: "學校運動教練工作不安全感、組織認同、工作倦怠與工作退縮行為：工作要求—資源模式之觀點", authors: "盧宛榛、陳宜潔、吳明翰、陳怡文、鄭志富", year: 2022, lang: "zh", tags: ["JD-R","工作不安全感"], summary: "基於 JD-R 模式，探討運動教練的工作不安全感如何透過工作倦怠影響退縮行為；並驗證「高組織認同」能有效削弱此負面中介模式。" },
+  { id: 8, title: "建構管理職能模式之研究—以醫療產業為例", authors: "陳殷哲、邱郁婷、戴慧如", year: 2021, lang: "zh", tags: ["管理職能","醫療業"], summary: "運用修正式德爾菲法與模糊層級分析法（FAHP）建構醫療業主管職能；發現高階主管首重決策分析與規劃，中基層主管首重團隊激勵與領導。" },
+  { id: 9, title: "人力資源事業夥伴的培育內容規劃之初探", authors: "簡博浩", year: 2019, lang: "zh", tags: ["HRBP","培訓"], summary: "探討 HR 轉型為事業夥伴（HRBP）面臨的困境，並以 McKinsey 7S 模型初步規劃出一套涵蓋變革推動、人才發展與策略影響的系統性培育課程。" },
+  { id: 10, title: "電視新聞媒體工作者企業社會責任知覺與組織承諾關聯性研究", authors: "陳佳慧", year: 2019, lang: "zh", tags: ["CSR","組織承諾"], summary: "探討電視新聞工作者對媒體履行社會責任的知覺對組織承諾的影響。實證指出「道德責任」的知覺對整體組織承諾具備最大的預測力。" },
+  { id: 11, title: "知覺屈就與離職意圖關係之研究—以敬業貢獻為中介變數", authors: "沈青慧、鄭惠玉", year: 2018, lang: "zh", tags: ["敬業度","知覺屈就"], summary: "指出工作者若產生「高才低就」與「才非所用」的知覺屈就感，皆會負向影響其敬業貢獻；敬業貢獻在知覺屈就與離職意圖之間扮演中介角色。" },
+  { id: 12, title: "Employee Engagement and Sustainable Organisational Change: Evidence from the UK Energy Sector", authors: "Rajiv Paul Assi", year: 2025, lang: "en", tags: ["敬業度","變革疲乏","博士論文"], summary: "博士論文，探討英國能源部門中員工敬業度對永續組織變革的影響。分析個人因素對變革準備度的作用，以及反覆變革失敗造成的倦怠感。" },
+  { id: 13, title: "Considerations for Prioritizing Workforce Engagement Investments: Comparing 2024 Federal Employee Viewpoint Survey Engagement Scales", authors: "Megan Forrester Lucinski", year: 2024, lang: "en", tags: ["敬業度","政策","博士論文"], summary: "博士論文，運用 2024 年美國聯邦員工觀點調查數據比較不同的敬業度指標，評估其對離職或內部調職意圖的預測力，為投資留才方案提供建議。" },
+  { id: 14, title: "Employee Engagement of Banking Employees", authors: "Charu Goyal", year: 2021, lang: "en", tags: ["敬業度","銀行業","博士論文"], summary: "博士論文，調查影響銀行業及 IT 產業員工敬業度的各項因素（如薪酬、職涯發展與組織正義），並檢驗這些因素與員工留任意願之關聯。" },
+  { id: 15, title: "Antecedents and Consequences of Employee Engagement", authors: "Alan M. Saks", year: 2006, lang: "en", tags: ["SET","敬業度","經典"], summary: "基於社會交換理論（SET），測試員工工作敬業度與組織敬業度的前因與後果模型。證實多項前因變數能有效預測敬業度，且敬業度在前因與員工結果之間扮演關鍵中介角色。" },
+  { id: 16, title: "Job Demands, Job Resources, and their Relationship with Burnout and Engagement: A Multi-Sample Study", authors: "Wilmar B. Schaufeli", year: 2004, lang: "en", tags: ["JD-R","敬業度","經典"], summary: "運用工作要求—資源模式（JD-R Model）探討工作倦怠與敬業度的關係，驗證工作要求會導致健康耗損與倦怠；而充足的工作資源則能驅動活力與專注等敬業度特徵。" },
+  { id: 17, title: "The Relationship Between New Ways of Working and Employee Engagement: First and Foremost a Matter of Environment Fit", authors: "Giauque, Cornu & Pacht", year: 2024, lang: "en", tags: ["遠距工作","P-E Fit","敬業度"], summary: "探討新型態工作模式（NWW，如遠距或彈性工作）對敬業度的影響。透過 2,693 份問卷證實，NWW 並不直接影響敬業度，而是透過 P-E Fit 產生間接中介影響。" },
+  { id: 18, title: "Exploring the Nexus Between a Supportive Workplace Environment, Employee Engagement, and Employee Performance in the Kingdom of Saudi Arabia", authors: "PLS-SEM Study (KSA)", year: 2025, lang: "en", tags: ["敬業度","支持性環境","PLS-SEM"], summary: "以沙烏地阿拉伯半官方組織為對象（349 份樣本），運用 PLS-SEM 分析，證實支持性工作環境能正向影響員工績效，且員工敬業度扮演正向的中介角色。" },
+  { id: 19, title: "Responsible Leadership: Fostering Employee Engagement through Positive Emotional Climate", authors: "Cinzia Calluso", year: 2025, lang: "en", tags: ["領導力","情緒氣候","敬業度"], summary: "探討「負責任的領導」與情緒氣候對員工敬業度的影響。透過 100 份問卷分析證實，負責任的領導能直接提升敬業度，同時透過形塑正向情緒氣候作為中介路徑。" },
+  { id: 20, title: "State of the Global Workplace: The Human Side of the AI Revolution (2026 Report)", authors: "Gallup", year: 2026, lang: "en", tags: ["敬業度","全球趨勢","Gallup"], summary: "蓋洛普 2026 全球職場狀態報告。數據指出全球員工敬業度連續兩年下降至 21%；揭露各區域在日常壓力、孤獨感與勞動力市場樂觀度的宏觀趨勢。" },
+  { id: 21, title: "2025 美世台灣員工敬業度與員工體驗調查白皮書", authors: "Mercer 美世 / 林倩如", year: 2025, lang: "zh", tags: ["敬業度","台灣","員工體驗","心理安全"], summary: "整合 2018-2024 年台灣員工敬業度與體驗調查數據。揭示台灣員工 7 年下降 4 個百分點、員工活力與熱情僅 62 分（亞太最低）、心理安全感不足為核心痛點；80%+ 員工認同主管回饋是台灣優勢。提供五大策略：精準掌握趨勢、診斷管理層效能、強化心理安全、結合企業策略、系統化行動計畫。" },
+  { id: 22, title: "2022 Global Trends in Employee Engagement Report", authors: "Kincentric (Spencer Stuart)", year: 2022, lang: "en", tags: ["敬業度","全球趨勢","中階主管","COR"], summary: "Kincentric 全球敬業度趨勢報告，涵蓋 125+ 國家 1,200 萬名員工樣本。早在 2022 年即發現中層管理人員壓力創歷年新高、工作—生活平衡比 2019 年下降 10 個百分點；員工敬業度從 2020 Q2 73% 峰值跌至 2022 Q1 62%。當高層讓員工對未來感到興奮時，敬業度提升 8 倍。" },
+  { id: 23, title: "2024 全球人才趨勢報告", authors: "Mercer 美世", year: 2024, lang: "en", tags: ["心理契約","信任","CSR","全球趨勢"], summary: "涵蓋 17 地區 16 產業、12,298 名受訪者的大型調查。揭露雇主信任度大幅滑落：員工對雇主「為社會做對事」的信任度從 78% → 69%，「為員工做對事」從 80% → 69%；42% 員工表示雇主未滿足需求（前年僅 19%）。提出四大趨勢：人本生產力、信任氛圍、彈性文化、數位流暢組織。" },
+];
+
+// ============= 新聞資料 =============
+const NEWS = [
+  {
+    id: 1, source: "Gallup", year: 2026, color: "coral",
+    title: "State of the Global Workplace: The Human Side of the AI Revolution",
+    titleZh: "全球職場狀態報告：AI 革命中的人性面",
+    publishDate: "2026 年發布",
+    desc: "蓋洛普 2026 全球職場狀態報告（State of the Global Workplace），公布全球敬業度連續兩年下滑至 21%，並深入剖析中階主管的敬業度危機。本報告的數據錨點。",
+    url: "https://www.gallup.com/workplace/349484/state-of-the-global-workplace.aspx",
+    type: "權威機構年度報告",
+    highlights: [
+      "全球員工敬業度跌至 21%，創 12 年來新低",
+      "管理者敬業度從 30% 跌至 27%，35 歲以下主管下降 5%、女性主管下降 7%",
+      "副標「AI 革命中的人性面」揭示科技躍進下人性的崩潰",
+      "蓋洛普將「敬業度」定義為熱情參與工作的程度，涵蓋活力、奉獻、專注三維度",
+    ],
+    quote: "全球敬業度跌至歷史冰點，反映的不是員工怠惰，而是組織治理在 AI 時代的系統性挑戰。",
+    relevance: "本報告的核心數據來源 — 提供 21%、13%、30→27% 等關鍵錨點，並引出「中階主管危機」特別專題。",
+  },
+  {
+    id: 2, source: "Gallup", year: 2025, color: "amber",
+    title: "Disengagement Persists Among U.S. Employees",
+    titleZh: "美國員工敬業度持續低迷",
+    publishDate: "2025 年深度分析",
+    desc: "美國員工敬業度持續低迷的長期分析。蓋洛普指出企業在「人才投資」上需要重新思考策略，將敬業度視為值得投資的關鍵資產。",
+    url: "https://www.gallup.com/workplace/391922/employee-engagement-threshold-investing-people.aspx",
+    type: "趨勢分析報告",
+    highlights: [
+      "美國員工敬業度長期低迷，反映系統性問題",
+      "提出「人才投資門檻」（Engagement Threshold）概念",
+      "敬業度應被視為值得策略性投資的資產，而非單純 HR 指標",
+      "區分高敬業企業 vs 一般企業，績效差距高達 4 倍以上",
+    ],
+    quote: "投資人才不是成本，是長期競爭力的核心要素 — 敬業度是這個投資的關鍵衡量指標。",
+    relevance: "支撐本報告「未來展望」中「敬業度管理從成本中心轉化為核心競爭力」的論述。",
+  },
+  {
+    id: 3, source: "TechNews", year: 2025, color: "purple",
+    title: "全球員工敬業度下降，蓋洛普：中階主管灰心喪志是主因",
+    titleZh: "中階主管灰心喪志成為敬業度下降主因",
+    publishDate: "2025/04/24 發布",
+    desc: "深度報導中階主管成為敬業度流失的「風暴中心」。本研究的關鍵特別專題參考來源——揭示情緒傳染與雙向夾擠機制。",
+    url: "https://technews.tw/2025/04/24/employee-engagement-lower-impact-productivity/",
+    type: "深度議題報導",
+    highlights: [
+      "中階主管被定位為「敬業度流失的風暴中心」",
+      "雙向夾擠：上承高層策略壓力，下接基層福祉需求",
+      "情緒傳染（Emotional Contagion）讓基層敬業度斷崖下跌",
+      "對應 JD-R 模型的「需求溢出效應」典型案例",
+    ],
+    quote: "主管的灰心喪志，會以情緒傳染方式拖垮整個團隊的活力與奉獻 — 這是組織病徵，不是個人問題。",
+    relevance: "本報告「中階主管危機」特別專題的核心參考來源 — 提供「情緒傳染」「雙向夾擠」等關鍵機制描述。",
+  },
+  {
+    id: 4, source: "TVBS 新聞", year: 2025, color: "coral",
+    title: "安靜崩解來襲！無聲工作者 21% 敬業度創 12 年新低 全球損失 4,380 億美元",
+    titleZh: "安靜崩解（Quiet Crumbling）的全球擴散",
+    publishDate: "2025/09 發布",
+    desc: "重磅報導全球敬業度跌至 12 年新低的歷史時刻，造成 4,380 億美元生產力損失。引入「安靜崩解」（Quiet Crumbling）這個新概念。",
+    url: "https://news.tvbs.com.tw/life/2985491",
+    type: "重大趨勢報導",
+    highlights: [
+      "首次將「安靜崩解」（Quiet Crumbling）正式引入華文職場討論",
+      "4,380 億美元 = 全球生產力損失的具體量化",
+      "「無聲工作者」隱蔽性勝於安靜離職，殺傷力更大",
+      "104 人力銀行林書伃顧問列出早期徵兆：疲倦↑、頻繁請假、高績效失常",
+    ],
+    quote: "安靜崩解是「正常出勤但內心掙扎」 — 比安靜離職更難察覺，但對組織的累積傷害更巨大。",
+    relevance: "本報告「安靜崩解 vs 安靜離職」特別專題的核心來源 — 提供質性差異對照表的論述基礎。",
+  },
+  {
+    id: 5, source: "technice", year: 2026, color: "teal",
+    title: "全球職場文化崩潰危機！員工敬業度暴跌、倦怠潮席捲 2026",
+    titleZh: "全球職場文化的本體論危機",
+    publishDate: "2026 年深度報導",
+    desc: "從「組織文化危機」角度深入分析倦怠潮的全球擴散現象，補充說明心理契約全面違約的本體論危機。",
+    url: "https://www.technice.com.tw/work-place/209088/",
+    type: "趨勢觀察報導",
+    highlights: [
+      "「職場文化崩潰」不只是員工態度問題，而是組織治理失能",
+      "倦怠潮（Burnout Wave）在 2026 年呈現結構性擴散",
+      "心理契約從「情感性承諾」退化為「交易性關係」",
+      "敬業度的「專注」特質（Absorption）首先消失",
+    ],
+    quote: "當員工不再相信組織的隱性承諾，他們不會吵鬧離開，而是默默地把心收回 — 這是組織文化最深的危機。",
+    relevance: "本報告「心理契約違約」三階段論述的延伸支撐 — 強化文化層面的本體論危機觀點。",
+  },
+  {
+    id: 6, source: "Cheers 天下", year: 2025, color: "amber",
+    title: "87% 台灣員工承受中高度心理健康風險！壓力、過勞與汙名正威脅職場生產力",
+    titleZh: "台灣本土心理健康危機數據",
+    publishDate: "2025 年發布",
+    desc: "天下雜誌 Cheers 報導台灣本土心理健康危機。87% 數字錨點來源，揭示數位壓力與工作—生活衝突是核心驅動。",
+    url: "https://www.cheers.com.tw/talent/article.action?id=5102557",
+    type: "台灣本土調查報導",
+    highlights: [
+      "87% 是台員「中高度心理風險」的明確比例 — 涵蓋幾乎全部勞動人口",
+      "壓力、過勞、汙名（Stigma）三大威脅同時存在",
+      "心理健康問題的汙名讓員工不敢求助，問題惡化",
+      "影響不止是員工福祉，更直接威脅企業整體生產力",
+    ],
+    quote: "近九成台灣員工正在「帶傷工作」 — 而企業普遍還沒有意識到這個隱形的生產力黑洞。",
+    relevance: "本報告 87% 心理風險錨點的權威來源 — 也是「數位壓力 × 工作生活衝突」交織機制的台灣實證。",
+  },
+  {
+    id: 7, source: "健康醫療網", year: 2025, color: "green",
+    title: "87% 台灣員工承受中高度心理健康風險，造成員工敬業度降低、缺勤嚴重和流動率提升",
+    titleZh: "心理風險具體後果的醫療視角分析",
+    publishDate: "2025 年發布",
+    desc: "從醫療健康視角解析心理風險的具體後果——含董氏基金會葉雅馨主任的具體建議（如「下班後不傳工作訊息」）。",
+    url: "https://www.healthnews.com.tw/article/63159",
+    type: "醫療專業報導",
+    highlights: [
+      "心理風險具體後果：敬業度↓、缺勤↑、流動率↑",
+      "董氏基金會葉雅馨主任直接建議：「下班後不傳工作訊息」",
+      "提及環境擾動（空污、氣候焦慮）的隱形殺手角色",
+      "心理健康應被納入企業 ESG 與 EAP 框架",
+    ],
+    quote: "心理健康不是員工個人的事 — 而是企業必須主動建立防護網的系統性課題。",
+    relevance: "本報告「外部環境壓力」與「HR 行動建議」中「下班不傳訊息」原則的直接來源。",
+  },
+  {
+    id: 8, source: "Thirst.io", year: 2026, color: "gold",
+    title: "22 Must-Know Employee Engagement Stats for 2026",
+    titleZh: "2026 年員工敬業度 22 項必知統計數據",
+    publishDate: "2026 年發布",
+    desc: "2026 年員工敬業度 22 項必知統計數據完整彙整。國際視角下的數據錨點，含產業別、世代別與不同層級的敬業度比較。",
+    url: "https://thirst.io/blog/employee-engagement-stats-2026/",
+    type: "統計數據彙整",
+    highlights: [
+      "22 項關鍵統計，涵蓋產業別、世代別、層級別比較",
+      "高敬業企業 vs 低敬業企業：獲利率差距達 23%",
+      "Z 世代與 Millennials 對敬業度的定義已徹底改變",
+      "遠距 / 混合工作模式下，敬業度差距達 15 個百分點",
+    ],
+    quote: "數字會說話 — 高敬業企業在每一個 KPI 上都全面領先，差距大到無法忽略。",
+    relevance: "提供本報告「世代差異」與「產業比較」的統計支撐，補強「未來展望」的趨勢預判依據。",
+  },
+  {
+    id: 9, source: "CSRone 永續智庫", year: 2026, color: "green",
+    title: "全球員工敬業度跌至 2020 年以來新低",
+    titleZh: "從 ESG 視角解讀敬業度危機",
+    publishDate: "2026/04/09 發布",
+    desc: "永續智庫從 ESG 視角深度報導 Gallup 2026 全球職場報告。揭露管理階層敬業度單年下降 5 個百分點（27%→22%）、南亞區為跌幅最大區域 -5%、總損失修正為 10 兆美元。",
+    url: "https://csrone.com/news/9861",
+    type: "永續視角報導",
+    highlights: [
+      "全球生產力損失修正為 10 兆美元（≈全球 GDP 9%）— 數字明顯升級",
+      "管理階層敬業度單年 -5 個百分點，由 27% 降至 22%",
+      "管理階層 vs 基層敬業度差距已消失，過去的「管理紅利」正在崩潰",
+      "南亞跌幅最大（-5pt）— 印度組織扁平化是主要驅動",
+      "員工福祉首次三年回升：34% 進入「蓬勃發展」狀態（+1pt）",
+      "管理者承受壓力、憤怒、悲傷、孤獨機率高於一般員工",
+    ],
+    quote: "管理階層的敬業度崩潰，是 AI 時代企業最該關注的盲點 — 不是技術買不夠多，是人沒被照顧好。",
+    relevance: "提供本報告 SECTION 01 經濟代價的最新數字（10 兆美元）— 補強「中階主管危機」的全球管理者敬業度數據。",
+  },
+  {
+    id: 10, source: "經理人 Manager Today", year: 2026, color: "purple",
+    title: "全球員工敬業度跌至近 5 年新低！背後原因竟是：主管自己先垮了",
+    titleZh: "組織扁平化的代價與 AI 焦慮",
+    publishDate: "2026/04/28 發布",
+    desc: "深度剖析「組織扁平化」如何壓垮中階主管，以及 AI 引入加劇員工不確定性。包含 66% 中階主管過勞、95% 企業未見 AI 成效、僅 12% 員工認為 AI 真正改變工作。",
+    url: "https://www.managertoday.com.tw/articles/view/72047",
+    type: "管理深度解析",
+    highlights: [
+      "全球敬業度 20%，每年損失 10 兆美元（GDP 9%）",
+      "95% 企業在 AI 投資後尚未看到具體成效",
+      "僅 12% 員工認為 AI 工具顯著改變工作方式",
+      "18% 美國員工擔心 5 年內被 AI 淘汰；已導入 AI 的企業攀升至 23%",
+      "金融業 32%、保險業 32%、科技業 31% 員工深感 AI 威脅",
+      "完全遠距員工就業樂觀度 -5pt；被迫進辦公室者跌 14pt",
+      "世代福祉需求：Z 世代要工作生活平衡、千禧重福利、X 世代要醫療保健",
+    ],
+    quote: "新技術能否成功，關鍵不在「取得工具」，而在團隊如何「有效整合」— 一切都繫於主管的敬業度與領導品質。",
+    relevance: "本報告「中階主管危機」與「AI 共存時代」雙專題的核心支撐 — 提供 AI 焦慮的產業別具體數據、世代福祉差異的實證。",
+  },
+  {
+    id: 11, source: "Mercer 美世", year: 2025, color: "coral",
+    title: "2025 美世台灣員工敬業度與員工體驗調查白皮書",
+    titleZh: "台灣本土的 7 年趨勢與痛點分析",
+    publishDate: "2025/11/07 發布",
+    desc: "美世整合 2018-2024 年台灣員工敬業度與體驗調查數據。重磅揭露台灣員工活力與熱情僅 62 分（亞太最低）、敬業度 7 年下降 4 個百分點、心理安全感不足是核心痛點。",
+    url: "https://www.mercer.com/zh-tw/insights/talent-and-transformation/2025-employee-experience-whitepaper/",
+    type: "顧問公司白皮書",
+    highlights: [
+      "台灣員工敬業度自 2018 年以來下降 4 個百分點",
+      "員工在工作中的活力與熱情僅得 62 分 — 亞太區最低",
+      "80%+ 員工認同主管給予有效指導與表揚（台灣優勢）",
+      "心理安全感不足：許多員工擔心負面後果而不敢發聲",
+      "績效管理與公平評價有待加強",
+      "工作意義與成就感下降，需重新設計員工體驗",
+      "2025 年起台灣上市櫃公司治理評鑑首次納入員工滿意度",
+    ],
+    quote: "員工敬業度調查不只是數字，更是企業與員工溝通的橋樑。 — 林倩如，美世台灣人才業務副總經理",
+    relevance: "本報告台灣脈絡的最權威來源 — 提供「心理安全」「主管領導力」「員工活力」三大本土痛點實證，補強 SECTION 01 的台灣分析。",
+  },
+  {
+    id: 12, source: "104 人力銀行 HR Forum", year: 2026, color: "amber",
+    title: "如何提升員工敬業度？從數據看企業的隱藏危機",
+    titleZh: "台灣 HR 觀點的實務指南",
+    publishDate: "2026 年 HR 充電專文",
+    desc: "104 人力銀行人資充電平台從台灣本土 HR 實務角度，分析企業如何透過數據洞察員工敬業度的隱藏危機，並提供具體的提升策略。",
+    url: "https://vip.104.com.tw/preLogin/recruiterForum/post/203957",
+    type: "HR 實務專欄",
+    highlights: [
+      "從台灣 HR 實務角度，提供敬業度提升的數據導向方法",
+      "強調「隱藏危機」概念 — 安靜崩解的早期偵測",
+      "104 人力銀行林書伃顧問的觀點延伸",
+      "提供台灣中小企業可立即執行的提升策略",
+    ],
+    quote: "敬業度的隱藏危機，往往不是離職率攀升才出現 — 而是員工早就「人在心不在」。",
+    relevance: "本報告「安靜崩解」早期徵兆論述的台灣 HR 實務佐證 — 補強 HR 行動框架中對「績效監測」的具體建議。",
+  },
+  {
+    id: 13, source: "IT PRO Magazine", year: 2022, color: "teal",
+    title: "Kincentric 報告：員工流失、經理倦怠是全球挑戰",
+    titleZh: "Kincentric 2022 全球敬業度趨勢報告",
+    publishDate: "2022/07/20 發布",
+    desc: "Spencer Stuart 旗下 Kincentric 公司發布的全球敬業度報告，涵蓋 125+ 國家 1,200 萬名員工樣本。早在 2022 年即點出「中層管理人員壓力」和「工作生活平衡下降」兩大警訊。",
+    url: "https://itpromag.com/2022/07/20/kincentric-employee-report/",
+    type: "顧問公司報告",
+    highlights: [
+      "樣本規模：125+ 國家、1,200 萬名員工 — 全球最大敬業度研究",
+      "敬業度 2020 Q2 峰值 73% → 2022 Q1 跌至 62%",
+      "中層管理人員壓力創歷年新高",
+      "工作—生活平衡比 2019 年下降 10 個百分點",
+      "高層領導讓員工對未來感到興奮時，敬業度高 8 倍",
+      "僅 50% 員工認為組織有足夠人員完成工作",
+      "僅 59% 員工感到努力被認可、54% 認為有未來事業機會",
+    ],
+    quote: "沒有任何單一措施可以帶來出色的工作體驗 — 它是多個積極員工體驗計畫共同累積的結果。 — Jeff Jolton",
+    relevance: "本報告「中階主管危機」的早期預警證據（2022 即出現）— 證明此趨勢已醞釀 4 年；同時補強「敬業度多重驅動」的論述。",
+  },
+  {
+    id: 14, source: "Cheers 天下", year: 2024, color: "gold",
+    title: "愈來愈多員工「不信任公司」！全球研究：關鍵在是否做到這 3 件事",
+    titleZh: "美世 2024 全球人才趨勢：信任崩潰",
+    publishDate: "2024/04/02 發布",
+    desc: "報導美世 2024 全球人才趨勢調查（涵蓋 17 地區、16 產業、12,298 名受訪者）。揭露雇主信任度大幅滑落、42% 員工表示雇主未滿足需求（前年僅 19%）— 心理契約違約的直接證據。",
+    url: "https://www.cheers.com.tw/talent/article.action?id=5103039",
+    type: "全球人才趨勢",
+    highlights: [
+      "42% 員工表示雇主沒有滿足他們的需求（前年僅 19%，年增 2 倍多）",
+      "員工對雇主「為社會做對事」的信任度從 78% → 69%",
+      "員工對雇主「為員工做對事」的信任度從 80% → 69%",
+      "員工感覺「被困住了」— 過低或過高流動率影響轉型",
+      "美世 2024 報告：845 高管 + 1,920 HR + 9,449 員工 + 84 投資者調查",
+      "建立信任氛圍極為重要：公平薪酬、共融文化、彈性組織",
+    ],
+    quote: "權力正重新回到雇主手中 — 但員工「被困住」的感受，正在悄悄醞釀為「安靜崩解」的全面爆發。",
+    relevance: "本報告「心理契約違約」三階段論述的核心實證 — 42% vs 19% 這個劇增數字，是情感性承諾退化為交易性關係的直接量化證據。",
+  },
+];
+
+// ============= 行動框架資料 =============
+const ACTIONS = [
+  {
+    id: 1,
+    title: "招募與任用策略：從源頭防範不適配",
+    color: "coral",
+    items: [
+      { h: "落實「真實工作預覽」（Realistic Job Previews）", p: "招募遴選時透明且真實地呈現工作內容與挑戰，避免為了吸引人才而過度美化職缺。協助求職者正確評估自身定位，有效降低員工入職後產生「高才低就」或「才非所用」的知覺屈就感。" },
+      { h: "運用「管理職能」作為甄選與評核標準", p: "建立各階層明確的職能行為指標：高階主管著重決策分析與規劃、中基層主管著重團隊激勵與領導。將職能標準作為招募、績效評估及晉升的依據。" },
+    ]
+  },
+  {
+    id: 2,
+    title: "跨世代與分層的人才培育與職涯發展",
+    color: "teal",
+    items: [
+      { h: "依年資客製化發展計畫", p: "年資 1-3 年：給予任務挑戰與明確肯定。3-5 年：提供職涯路徑與學習資源避免成長停滯。5-9 年：賦予決策參與權與主人翁意識。50 歲以上中高齡員工：強化「當責」認知，賦予「經驗傳承」的導師角色。" },
+      { h: "建構系統化的人資事業夥伴（HRBP）培訓", p: "針對 HR 人員導入 7S 模型等系統性培訓計畫，涵蓋策略夥伴、變革促進、人才發展等面向，並搭配見機性的專案任務指派，讓 HR 具備拉高至經營層次對話的能力。" },
+    ]
+  },
+  {
+    id: 3,
+    title: "強化員工體驗與內部企業社會責任（Internal CSR）",
+    color: "amber",
+    items: [
+      { h: "落實內部 CSR 措施", p: "資源優先投資於內部員工：穩定僱傭關係、工作安全衛生、培訓發展、工作生活平衡、機會平等、合理薪酬、職務賦權。這能直接喚起員工的社會交換心理，顯著提升組織認同並降低離職傾向。" },
+      { h: "定期監測「個人與環境適配度（P-E Fit）」", p: "員工體驗與敬業度的高度關聯往往取決於適配度。建議將個人目標與組織目標的適配度調查，納入年度績效面談或定期的組織氣候脈搏調查中。" },
+    ]
+  },
+  {
+    id: 4,
+    title: "優化績效管理與新型態工作模式（NWW）",
+    color: "green",
+    items: [
+      { h: "導入目標管理（MBO）與工作自主權", p: "順應新型態工作模式（遠距／混合辦公），主管應放棄對工作過程的過度微觀管理。給予員工決定「如何完成工作」的自主權，並以「結果與目標達成率」作為評估標準。" },
+      { h: "建立雙向夥伴關係與即時回饋機制", p: "拋棄傳統「上對下」的威權指令，將主管與部屬視為合作夥伴。定期進行開放式一對一面談，並在專案結束時提供具體改善建議與認可——對防範 Z 世代「安靜離職」尤為重要。" },
+    ]
+  },
+  {
+    id: 5,
+    title: "組織文化與專案管理導入",
+    color: "purple",
+    items: [
+      { h: "形塑道德領導與共同願景", p: "企業應追求經濟與社會目的之平衡，建立高道德標準的企業文化與領導風格。透過打造「共同願景」，能有效強化員工的組織認同，緩解因為工作不安全感或高壓環境所帶來的工作倦怠。" },
+      { h: "以「專案管理知識體系」推動 ESG 與人才專案", p: "在執行企業永續報告書（ESG）或重大人才發展計畫時，導入專案管理工具（WBS 工作分解結構、ARCI 責任分派矩陣、實獲值管理）。確保在有限資源下有效辨識風險、跨部門協調。" },
+    ]
+  },
+];
+
+// ============= 渲染文獻清單 =============
+function renderLiterature(list) {
+  const c = document.getElementById('literatureList');
+  c.innerHTML = '';
+  if (list.length === 0) {
+    c.innerHTML = `<div class="card p-8 text-center text-[var(--gray)]">沒有符合條件的文獻</div>`;
+    return;
+  }
+  list.forEach(lit => {
+    const langLabel = lit.lang === 'zh' ? '中文' : '英文';
+    const tagsHtml = lit.tags.map(t => `<span class="pill pill-gray">${t}</span>`).join('');
+    const html = `
+      <details class="card overflow-hidden">
+        <summary class="p-4 lg:p-5 flex items-start gap-4 hover:bg-[var(--cream-2)] transition">
+          <div class="flex-shrink-0">
+            <div class="w-10 h-10 rounded-full font-bold text-white flex items-center justify-center text-sm" style="background: ${lit.lang === 'zh' ? 'var(--teal)' : 'var(--purple)'};">${String(lit.id).padStart(2,'0')}</div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold navy-text text-sm lg:text-base leading-snug mb-1">${lit.title}</div>
+            <div class="flex flex-wrap items-center gap-2 text-xs text-[var(--gray)]">
+              <span class="font-medium">${lit.authors}</span>
+              <span>·</span>
+              <span>${lit.year}</span>
+              <span>·</span>
+              <span class="pill ${lit.lang === 'zh' ? 'pill-teal' : 'pill-purple'}">${langLabel}</span>
+              ${tagsHtml}
+            </div>
+          </div>
+          <svg class="chevron flex-shrink-0 mt-1" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="px-4 lg:px-5 pb-5 pt-2 border-t border-[var(--paper)] bg-[var(--cream-2)]">
+          <div class="text-xs font-bold coral-text mb-2 mt-3">摘要與重點</div>
+          <p class="text-sm leading-relaxed">${lit.summary}</p>
+        </div>
+      </details>
+    `;
+    c.insertAdjacentHTML('beforeend', html);
+  });
+  document.getElementById('litCount').textContent = list.length;
+}
+
+// 篩選邏輯
+let activeTag = null;
+function filterLiterature() {
+  const q = document.getElementById('litSearch').value.toLowerCase();
+  const lang = document.getElementById('litLang').value;
+  const year = document.getElementById('litYear').value;
+  const filtered = LITERATURE.filter(lit => {
+    if (q && !(lit.title.toLowerCase().includes(q) || lit.authors.toLowerCase().includes(q) || lit.summary.toLowerCase().includes(q) || lit.tags.some(t => t.toLowerCase().includes(q)))) return false;
+    if (lang && lit.lang !== lang) return false;
+    if (year && String(lit.year) !== year) return false;
+    if (activeTag && !lit.tags.some(t => t.includes(activeTag))) return false;
+    return true;
+  });
+  renderLiterature(filtered);
+}
+
+document.getElementById('litSearch').addEventListener('input', filterLiterature);
+document.getElementById('litLang').addEventListener('change', filterLiterature);
+document.getElementById('litYear').addEventListener('change', filterLiterature);
+document.getElementById('litReset').addEventListener('click', () => {
+  document.getElementById('litSearch').value = '';
+  document.getElementById('litLang').value = '';
+  document.getElementById('litYear').value = '';
+  activeTag = null;
+  document.querySelectorAll('.tag-filter').forEach(b => b.style.outline = '');
+  filterLiterature();
+});
+document.querySelectorAll('.tag-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tag = btn.dataset.tag;
+    if (activeTag === tag) {
+      activeTag = null;
+      btn.style.outline = '';
+    } else {
+      activeTag = tag;
+      document.querySelectorAll('.tag-filter').forEach(b => b.style.outline = '');
+      btn.style.outline = '2px solid var(--navy)';
+      btn.style.outlineOffset = '1px';
+    }
+    filterLiterature();
+  });
+});
+renderLiterature(LITERATURE);
+
+// ============= 渲染新聞清單（點擊觸發飛入式詳情面板）=============
+function renderNews() {
+  const c = document.getElementById('newsList');
+  c.innerHTML = '';
+  NEWS.forEach(n => {
+    const colorVar = {coral:'coral',amber:'amber',purple:'purple',teal:'teal',green:'green',gold:'gold'}[n.color];
+    const html = `
+      <button type="button" class="news-card card p-5 flex flex-col h-full text-left w-full" data-news-id="${n.id}">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full font-bold text-white flex items-center justify-center text-xs" style="background: var(--${colorVar});">${String(n.id).padStart(2,'0')}</div>
+            <div class="text-xs font-bold" style="color: var(--${colorVar});">${n.source} · ${n.year}</div>
+          </div>
+          <div class="news-card-arrow flex items-center gap-1 text-xs text-[var(--gray)]">
+            <span>展開詳情</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <h3 class="font-semibold navy-text text-base leading-snug mb-2 flex-1">${n.title}</h3>
+        <p class="text-xs leading-relaxed text-[var(--gray)] mb-2">${n.desc}</p>
+        <div class="flex items-center justify-between text-xs pt-2 border-t border-[var(--paper)]">
+          <span class="pill" style="background: rgba(107,92,74,0.1); color: var(--gray);">${n.type}</span>
+          <span class="text-[var(--coral)] font-medium">查看完整內容 →</span>
+        </div>
+      </button>
+    `;
+    c.insertAdjacentHTML('beforeend', html);
+  });
+
+  // 綁定點擊事件
+  document.querySelectorAll('.news-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.dataset.newsId);
+      openNewsPanel(id);
+    });
+  });
+}
+
+// ============= 飛入式新聞詳情面板 =============
+function openNewsPanel(id) {
+  const news = NEWS.find(n => n.id === id);
+  if (!news) return;
+
+  const colorVar = {coral:'coral',amber:'amber',purple:'purple',teal:'teal',green:'green',gold:'gold'}[news.color];
+  const highlightsHtml = news.highlights.map(h => `
+    <li class="news-panel-highlight">
+      <svg class="flex-shrink-0 mt-1" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--${colorVar});"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>${h}</span>
+    </li>
+  `).join('');
+
+  document.getElementById('newsPanel').innerHTML = `
+    <div class="news-panel-header" style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);">
+      <button class="news-panel-close" onclick="closeNewsPanel()" aria-label="關閉">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" style="background: var(--${colorVar});">${String(news.id).padStart(2,'0')}</div>
+        <div>
+          <div class="text-sm font-bold" style="color: var(--amber);">${news.source}</div>
+          <div class="text-xs opacity-80 text-white">${news.publishDate}</div>
+        </div>
+      </div>
+      <div class="text-xs px-2 py-0.5 rounded inline-block mb-3" style="background: rgba(216,155,90,0.25); color: var(--amber);">${news.type}</div>
+      <h2 class="news-panel-title">${news.title}</h2>
+      ${news.titleZh && news.titleZh !== news.title ? `<div class="news-panel-subtitle">${news.titleZh}</div>` : ''}
+    </div>
+
+    <div class="news-panel-body">
+      <!-- 摘要 -->
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">📋 內容摘要</div>
+        <p class="text-sm leading-relaxed">${news.desc}</p>
+      </section>
+
+      <!-- 關鍵重點 -->
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">🔑 關鍵重點</div>
+        <ul class="space-y-2.5">${highlightsHtml}</ul>
+      </section>
+
+      <!-- 關鍵語錄 -->
+      <section class="news-panel-quote" style="border-left-color: var(--${colorVar});">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="color: var(--${colorVar}); opacity: 0.4; margin-bottom: 0.5rem;"><path d="M6.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L9.758 4.03c0 0-.218.052-.597.144C8.97 4.222 8.737 4.278 8.472 4.345c-.271.05-.56.187-.882.312C7.272 4.799 6.904 4.895 6.562 5.123c-.344.218-.741.4-1.091.692C5.132 6.116 4.723 6.377 4.421 6.76c-.33.358-.656.734-.909 1.162C3.219 8.33 3.02 8.778 2.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C2.535 17.474 4.338 19 6.5 19c2.485 0 4.5-2.015 4.5-4.5S8.985 10 6.5 10zM17.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L20.758 4.03c0 0-.218.052-.597.144-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.33.358-.656.734-.909 1.162C14.219 8.33 14.02 8.778 13.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C13.535 17.474 15.338 19 17.5 19c2.485 0 4.5-2.015 4.5-4.5S19.985 10 17.5 10z"/></svg>
+        <p class="news-panel-quote-text">${news.quote}</p>
+      </section>
+
+      <!-- 對應本研究 -->
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">🔗 對應本研究的引用點</div>
+        <p class="text-sm leading-relaxed">${news.relevance}</p>
+      </section>
+
+      <!-- 原始連結 -->
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">🌐 原始報導連結</div>
+        <a href="${news.url}" target="_blank" rel="noopener" class="news-panel-link" style="border-color: var(--${colorVar});">
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold navy-text mb-1">前往原始報導</div>
+            <div class="text-xs font-mono text-[var(--gray)] truncate">${news.url}</div>
+          </div>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--${colorVar}); flex-shrink: 0;"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+        <p class="text-xs text-[var(--gray)] italic mt-2">
+          ⓘ 點擊上方連結將在新分頁開啟原始來源。部分新聞網站會在新分頁中顯示其原生介面。
+        </p>
+      </section>
+    </div>
+  `;
+
+  document.getElementById('newsPanelOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNewsPanel() {
+  document.getElementById('newsPanelOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ESC 鍵關閉
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNewsPanel();
+});
+
+// ============= 通用詳情資料庫（理論、警訊、特別專題）=============
+const INSIGHTS = {
+  // === 首頁三大警訊 ===
+  'stat-21': {
+    title: "21%　全球敬業度",
+    titleZh: "Global Engagement at 12-Year Low",
+    source: "Gallup 2026 ‧ 全球職場現況",
+    color: "coral",
+    type: "全球趨勢指標",
+    summary: "全球員工敬業度跌至 21%，是 2009 年以來首次連續兩年下滑，創 12 年來新低。Gallup 估算全球敬業度每相差 1 個百分點，相當於 2,100 萬名員工。",
+    highlights: [
+      "2020：20% → 2021：21% → 2022 峰值 23% → 2024 反轉 → 2025 跌至 21%",
+      "2024 與 2025 連續兩年下滑，是 Gallup 歷史首次",
+      "南亞下降 5 個百分點，是全球跌幅最大區域",
+      "「敬業度」定義：熱情參與工作的程度（活力、奉獻、專注三維）",
+      "經濟代價：4,380-10,000 億美元 / 年（占全球 GDP 9%）",
+      "Gallup 副標「AI 革命中的人性面」揭示技術躍進下的人性崩潰",
+    ],
+    quote: "全球敬業度跌至歷史冰點，反映的不是員工怠惰，而是組織治理在 AI 時代的系統性挑戰。— Gallup CEO Jon Clifton",
+    relatedNews: [1, 4, 9, 10, 8],
+    relatedLit: [20, 22],
+    appears: "出現於 SECTION 01 全球現況、SECTION 04 中階主管危機、未來展望",
+  },
+  'stat-13': {
+    title: "13%　臺灣敬業度",
+    titleZh: "Taiwan: Lowest in East Asia",
+    source: "Gallup 2026 ‧ 區域分析 + Mercer 白皮書",
+    color: "coral-deep",
+    type: "台灣本土警訊",
+    summary: "台灣員工敬業度僅 13%，是東亞六國最低。Mercer 白皮書進一步揭露：台灣員工敬業度自 2018 年以來下降 4 個百分點，員工在工作中的活力與熱情僅得 62 分，為亞太區最低。",
+    highlights: [
+      "13% — 東亞六國敬業度最低（Gallup 2026）",
+      "7 年趨勢：2018 → 2024 累積下降 4 個百分點（Mercer 2025）",
+      "員工活力與熱情 62 分 — 亞太區最低（Mercer 2025）",
+      "心理安全感不足：員工因擔心負面後果而不敢發聲",
+      "正面消息：80%+ 員工認同主管給予有效指導與表揚（台灣優勢）",
+      "2025 年起台灣上市櫃公司治理評鑑首次納入員工滿意度",
+    ],
+    quote: "員工敬業度調查不只是數字，更是企業與員工溝通的橋樑。— 林倩如，美世台灣人才業務副總經理",
+    relatedNews: [1, 11, 6, 7, 12],
+    relatedLit: [20, 21],
+    appears: "出現於 SECTION 01 全球現況、SECTION 04 中階主管危機、未來展望",
+  },
+  'stat-87': {
+    title: "87%　台員心理健康風險",
+    titleZh: "Mental Health Risk in Taiwan",
+    source: "2023 亞洲心理健康指數 + Cheers 天下",
+    color: "gold",
+    type: "心理健康危機",
+    summary: "高達 87% 的台灣員工承受中高度心理健康風險。壓力、過勞與汙名同時威脅職場生產力，幾乎涵蓋全部勞動人口。",
+    highlights: [
+      "中高度心理風險涵蓋幾乎全部台灣勞動人口",
+      "三大威脅同時存在：壓力、過勞、汙名（Stigma）",
+      "心理健康問題的汙名讓員工不敢求助，問題惡化",
+      "後果：敬業度降低、缺勤嚴重、流動率提升、生產力下降",
+      "董氏基金會建議：「下班後不傳工作訊息」應為主管率先示範",
+      "Cyber Incivility（網路失禮）與 Telepressure（持續連線壓力）是兩大驅動",
+    ],
+    quote: "近九成台灣員工正在「帶傷工作」 — 而企業普遍還沒有意識到這個隱形的生產力黑洞。",
+    relatedNews: [6, 7, 11],
+    relatedLit: [21],
+    appears: "出現於 SECTION 01 全球現況、SECTION 03 數位壓力成因、SECTION 06 外部環境壓力",
+  },
+  // === 三大理論框架 ===
+  'theory-jdr': {
+    title: "JD-R　工作要求—資源模型",
+    titleZh: "Job Demands-Resources Model",
+    source: "Schaufeli (2004) 經典理論",
+    color: "teal",
+    type: "解釋敬業度耗竭機制的理論",
+    summary: "當工作需求（負荷、壓力、情緒消耗）持續超越可用資源（支持、自主、工具），員工會走向倦怠、敬業度耗竭。是當代敬業度研究的奠基理論。",
+    highlights: [
+      "兩大變數：工作要求（消耗）與工作資源（補充）",
+      "工作要求過高 → 耗竭路徑：健康問題、倦怠、退縮",
+      "工作資源充足 → 動機路徑：活力、奉獻、專注（敬業度三維）",
+      "雙螺旋過程（dual process）：耗竭與動機並行",
+      "「需求溢出效應」（Demand Spillover）：壓力會在組織中擴散",
+      "Schaufeli (2004) 以工作活力（Vigor）、奉獻（Dedication）、專注（Absorption）為敬業度三維",
+    ],
+    quote: "工作要求未必有害 — 真正的問題是「沒有對應的資源來消化」。沒有資源的高要求，就是倦怠的配方。",
+    relatedNews: [3, 10],
+    relatedLit: [3, 7, 16, 22],
+    appears: "貫穿全報告 — 特別是 SECTION 03 六類成因與 SECTION 04 中階主管危機",
+  },
+  'theory-cor': {
+    title: "COR　資源保存理論",
+    titleZh: "Conservation of Resources Theory",
+    source: "Hobfoll 經典理論",
+    color: "coral",
+    type: "解釋員工為何自保的理論",
+    summary: "員工會優先保護核心資源（穩定、控制、自尊、社會支持）。當資源持續流失且無法補充，投入行為被抑制，員工轉為自保模式 — 這是理性的自我保護，不是怠惰。",
+    highlights: [
+      "「資源」泛指任何有價值的事物：時間、能量、關係、自尊、穩定性",
+      "資源遭威脅 → 進入「保護模式」（不投入工作）",
+      "資源被掠奪 → 螺旋式向下惡化（loss spiral）",
+      "解釋為何「加薪不能挽回敬業度」 — 因為員工是在保護其他資源",
+      "對應台灣實證：高才低就、工作不安全感、知覺屈就",
+      "管理意涵：先處理安全感，再談激勵",
+    ],
+    quote: "員工不是不投入，是沒餘力投入。先把資源還給他們，再期待他們交出更多。",
+    relatedNews: [4, 11],
+    relatedLit: [6, 7, 11, 22],
+    appears: "SECTION 03 工作不安全感、數位壓力、變革疲乏、外部環境壓力",
+  },
+  'theory-set': {
+    title: "SET　社會交換理論",
+    titleZh: "Social Exchange Theory",
+    source: "Saks (2006) 應用至敬業度研究",
+    color: "amber",
+    type: "解釋心理契約違約的理論",
+    summary: "員工與組織的關係建立在互惠基礎上。若員工感受到組織未履行承諾或支持不足，互惠循環中斷，敬業度自然下降 — 這是理性反應，不是怠惰。",
+    highlights: [
+      "員工付出（投入、忠誠）vs 組織回報（薪酬、支持、認可、穩定）",
+      "互惠平衡 → 高敬業度；互惠失衡 → 撤回投入",
+      "心理契約（Psychological Contract）：未寫明但被期待的隱性承諾",
+      "違約三階段：情感性承諾 → 違約 → 交易性關係",
+      "Mercer 2024 證據：42% 員工表示雇主未滿足需求（前年僅 19%）",
+      "信任崩潰：對雇主「為員工做對事」的信任度 80% → 69%",
+    ],
+    quote: "當員工不再相信組織會為他做對的事，他也不會再為組織多做任何事。— 這是社會交換的鐵律。",
+    relatedNews: [14, 5, 4],
+    relatedLit: [1, 6, 11, 15, 23],
+    appears: "SECTION 05 安靜崩解 × 心理契約、SECTION 03 工作不安全感",
+  },
+  // === 中階主管危機 ===
+  'manager-crisis': {
+    title: "中階主管：敬業度流失的風暴中心",
+    titleZh: "Middle Managers: The Eye of the Storm",
+    source: "Gallup 2026 + 經理人 + Kincentric 2022",
+    color: "purple",
+    type: "結構性管理危機",
+    summary: "中階主管敬業度從 30% 跌至 27%（單年 -5pt），是整體下降主因。年輕世代管理者下降 5pt、女性主管下降 7pt。早在 2022 年 Kincentric 即點出此趨勢，2026 年達歷史高峰。",
+    highlights: [
+      "全球管理者敬業度：30% → 27%（單年 -5pt）— Gallup 2026",
+      "管理階層 vs 基層敬業度差距已消失（CSRone 2026）",
+      "南亞地區管理者敬業度單年 -8pt（與印度組織扁平化高度相關）",
+      "66% 中階主管深陷過勞危機（經理人 2026）",
+      "Kincentric 2022 早期警訊：中層管理人員壓力創歷年新高",
+      "情緒傳染（Emotional Contagion）：主管灰心 → 基層斷崖下跌",
+      "工作—生活平衡比 2019 下降 10pt（Kincentric）",
+      "JD-R 雙向夾擠：上承高層策略壓力、下接基層福祉需求",
+    ],
+    quote: "新技術能否成功，關鍵不在「取得工具」，而在團隊如何「有效整合」 — 一切都繫於主管的敬業度與領導品質。",
+    relatedNews: [1, 3, 9, 10, 13],
+    relatedLit: [8, 20, 22],
+    appears: "本報告核心特別專題 SECTION 04",
+  },
+  // === 心理契約違約 ===
+  'contract-breach': {
+    title: "心理契約違約：信任崩潰的量化證據",
+    titleZh: "Psychological Contract Breach",
+    source: "Mercer 2024 + TVBS 2025 + technice",
+    color: "amber",
+    type: "信任崩潰危機",
+    summary: "員工與組織的隱性承諾正在全面違約。Mercer 2024 揭露：42% 員工表示雇主未滿足需求（前年僅 19%，年增 2 倍多）。信任度從 78-80% 暴跌至 69%。這正是「安靜崩解」的本體論根源。",
+    highlights: [
+      "42% 員工表示雇主沒滿足需求（2024）vs 19%（2023）— 暴增 2 倍",
+      "信任「雇主為社會做對事」：78% → 69%（Mercer 2024）",
+      "信任「雇主為員工做對事」：80% → 69%（Mercer 2024）",
+      "員工感覺「被困住了」 — 影響流動率（過高或過低都有害）",
+      "違約三階段：情感性承諾 → 心理契約違約 → 交易性關係",
+      "「專注」（Absorption）特質首先消失，敬業度三維開始崩解",
+      "在台灣脈絡：高才低就（知覺屈就）是典型的違約感知模式",
+    ],
+    quote: "權力正重新回到雇主手中 — 但員工「被困住」的感受，正在悄悄醞釀為「安靜崩解」的全面爆發。",
+    relatedNews: [14, 5, 4, 9],
+    relatedLit: [1, 11, 15, 23],
+    appears: "本報告核心特別專題 SECTION 05",
+  },
+  // === AI 焦慮（新概念）===
+  'ai-anxiety': {
+    title: "AI 焦慮：Techno-Insecurity 的爆發",
+    titleZh: "AI Anxiety in the Workplace",
+    source: "Gallup 2026 + 經理人 2026",
+    color: "gold",
+    type: "新興職場焦慮",
+    summary: "AI 引入正在加劇 Techno-Insecurity — 員工擔心被取代的不安。但矛盾的是：95% 企業未見 AI 成效，僅 12% 員工認為 AI 真正改變工作。投入與焦慮並存，形成「生產力—投入度的悖論」。",
+    highlights: [
+      "18% 美國員工擔心 5 年內被 AI 淘汰",
+      "已導入 AI 的企業：員工焦慮飆至 23%（+5pt）",
+      "金融業 32%、保險業 32%、科技業 31% 員工深感 AI 威脅",
+      "95% 企業尚未看到 AI 帶來的具體成效",
+      "僅 12% 員工認為 AI 工具顯著改變工作方式",
+      "Gallup 副標「AI 革命中的人性面」直指此問題",
+      "完全遠距員工就業樂觀度 -5pt；被迫進辦公室者跌 14pt",
+      "解方：AI 共存的角色再設計 × 主管領導力 × 技能對映",
+    ],
+    quote: "企業投入大量資源在 AI，但生產力的提升相當有限 — Gallup 數據指出企業普遍忽略的關鍵答案：管理階層。",
+    relatedNews: [1, 10],
+    relatedLit: [20],
+    appears: "貫穿 SECTION 03 數位壓力、SECTION 04 中階主管、未來展望",
+  },
+};
+
+// ============= 通用詳情面板 =============
+function openDetailPanel(insightKey) {
+  const data = INSIGHTS[insightKey];
+  if (!data) return;
+
+  const colorVar = data.color;
+  const highlightsHtml = data.highlights.map(h => `
+    <li class="news-panel-highlight">
+      <svg class="flex-shrink-0 mt-1" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: var(--${colorVar});"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>${h}</span>
+    </li>
+  `).join('');
+
+  // 相關新聞列表（可點擊轉入新聞面板）
+  const relNewsHtml = (data.relatedNews || []).map(nid => {
+    const n = NEWS.find(x => x.id === nid);
+    if (!n) return '';
+    return `
+      <button type="button" class="related-item" onclick="closeNewsPanel(); setTimeout(() => openNewsPanel(${nid}), 350);">
+        <div class="related-item-label" style="background: var(--${n.color});">#${String(n.id).padStart(2,'0')}</div>
+        <div class="related-item-body">
+          <div class="text-xs font-semibold" style="color: var(--${n.color});">${n.source} · ${n.year}</div>
+          <div class="font-semibold navy-text text-sm leading-snug">${n.title}</div>
+        </div>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--gray); flex-shrink: 0;"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    `;
+  }).join('');
+
+  // 相關文獻列表
+  const relLitHtml = (data.relatedLit || []).map(lid => {
+    const l = LITERATURE.find(x => x.id === lid);
+    if (!l) return '';
+    return `
+      <div class="related-lit">
+        <div class="related-lit-num" style="background: ${l.lang === 'zh' ? 'var(--teal)' : 'var(--purple)'};">#${String(l.id).padStart(2,'0')}</div>
+        <div>
+          <div class="font-semibold navy-text text-sm leading-snug">${l.title}</div>
+          <div class="text-xs text-[var(--gray)] mt-0.5">${l.authors} · ${l.year}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('newsPanel').innerHTML = `
+    <div class="news-panel-header" style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);">
+      <button class="news-panel-close" onclick="closeNewsPanel()" aria-label="關閉">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="text-xs px-2 py-0.5 rounded inline-block mb-3" style="background: rgba(216,155,90,0.25); color: var(--amber);">${data.type}</div>
+      <h2 class="news-panel-title">${data.title}</h2>
+      ${data.titleZh ? `<div class="news-panel-subtitle">${data.titleZh}</div>` : ''}
+      <div class="text-xs opacity-75 text-white mt-2">📚 ${data.source}</div>
+    </div>
+
+    <div class="news-panel-body">
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">📋 內容摘要</div>
+        <p class="text-sm leading-relaxed">${data.summary}</p>
+      </section>
+
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">🔑 關鍵重點</div>
+        <ul class="space-y-2.5">${highlightsHtml}</ul>
+      </section>
+
+      <section class="news-panel-quote" style="border-left-color: var(--${colorVar});">
+        <p class="news-panel-quote-text">"${data.quote}"</p>
+      </section>
+
+      ${data.appears ? `
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">📍 在本報告出現的位置</div>
+        <p class="text-sm leading-relaxed">${data.appears}</p>
+      </section>` : ''}
+
+      ${relNewsHtml ? `
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">📰 相關新聞報導（點擊跳轉）</div>
+        <div class="space-y-2">${relNewsHtml}</div>
+      </section>` : ''}
+
+      ${relLitHtml ? `
+      <section class="news-panel-section">
+        <div class="news-panel-section-h" style="color: var(--${colorVar});">📚 相關學術文獻</div>
+        <div class="space-y-2">${relLitHtml}</div>
+      </section>` : ''}
+    </div>
+  `;
+
+  document.getElementById('newsPanelOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openDetailPanel = openDetailPanel;
+window.openNewsPanel = openNewsPanel;
+window.closeNewsPanel = closeNewsPanel;
+
+renderNews();
+
+// ============= 渲染行動框架 =============
+function renderActions() {
+  const c = document.getElementById('actionList');
+  c.innerHTML = '';
+  ACTIONS.forEach((a, idx) => {
+    const itemsHtml = a.items.map(item => `
+      <div class="pl-6 mb-4">
+        <div class="font-semibold navy-text text-sm mb-1">▸ ${item.h}</div>
+        <p class="text-xs lg:text-sm leading-relaxed text-[var(--gray)]">${item.p}</p>
+      </div>
+    `).join('');
+    const html = `
+      <details class="card overflow-hidden" ${idx === 0 ? 'open' : ''}>
+        <summary class="p-5 flex items-center gap-4 hover:bg-[var(--cream-2)] transition">
+          <div class="w-12 h-12 rounded-full font-bold text-white flex items-center justify-center text-lg flex-shrink-0" style="background: var(--${a.color});">${String(a.id).padStart(2,'0')}</div>
+          <div class="flex-1">
+            <div class="font-bold navy-text text-base lg:text-lg leading-snug">${a.title}</div>
+            <div class="text-xs text-[var(--gray)] mt-0.5">${a.items.length} 項具體做法</div>
+          </div>
+          <svg class="chevron flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="px-5 pb-5 pt-3 border-t border-[var(--paper)] bg-[var(--cream-2)]">
+          ${itemsHtml}
+        </div>
+      </details>
+    `;
+    c.insertAdjacentHTML('beforeend', html);
+  });
+}
+renderActions();
+
+// ============= 六類成因 Tab 切換 =============
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const id = btn.dataset.cause;
+    document.querySelectorAll('.cause-panel').forEach(p => {
+      if (p.dataset.id === id) {
+        p.classList.remove('hidden');
+      } else {
+        p.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// ============= 導覽列 active 狀態 =============
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = Array.from(navLinks).map(l => document.getElementById(l.dataset.target)).filter(Boolean);
+function updateActiveNav() {
+  let activeIdx = 0;
+  for (let i = 0; i < sections.length; i++) {
+    const rect = sections[i].getBoundingClientRect();
+    if (rect.top <= 120) activeIdx = i;
+  }
+  navLinks.forEach((l, i) => {
+    const isActive = i === activeIdx;
+    l.classList.toggle('active', isActive);
+    // 將 active 連結捲入視野
+    if (isActive) {
+      const menu = document.getElementById('topnavMenu');
+      if (menu) {
+        const linkRect = l.getBoundingClientRect();
+        const menuRect = menu.getBoundingClientRect();
+        if (linkRect.right > menuRect.right - 20 || linkRect.left < menuRect.left + 20) {
+          menu.scrollTo({
+            left: l.offsetLeft - menu.clientWidth / 2 + l.clientWidth / 2,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  });
+}
+window.addEventListener('scroll', updateActiveNav);
+
+// ============= 行動裝置選單（點品牌按鈕回到頁首）=============
+const menuToggleBtn = document.getElementById('menuToggle');
+if (menuToggleBtn) {
+  menuToggleBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ============= 圖表 =============
+// 折線圖
+const trendCtx = document.getElementById('trendChart');
+new Chart(trendCtx, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025'],
+    datasets: [{
+      label: '全球敬業度 (%)',
+      data: [20,21,23,23,21,21],
+      borderColor: '#C97B3D',
+      backgroundColor: 'rgba(201,123,61,0.10)',
+      borderWidth: 3,
+      tension: 0.35,
+      pointBackgroundColor: '#C97B3D',
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      pointBorderWidth: 2,
+      pointBorderColor: '#FFFFFF',
+      fill: true,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1F4D2C',
+        titleColor: '#D89B5A',
+        bodyColor: '#FFFFFF',
+        padding: 12,
+        cornerRadius: 6,
+        displayColors: false,
+        callbacks: { label: (ctx) => `敬業度：${ctx.parsed.y}%` }
+      }
+    },
+    scales: {
+      y: { min: 18, max: 25, ticks: { color: '#6B5C4A', font: { size: 11 }, callback: (v) => v + '%' }, grid: { color: 'rgba(184,169,142,0.25)' } },
+      x: { ticks: { color: '#6B5C4A', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// 雷達圖
+const radarCtx = document.getElementById('radarChart');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['工作不安全感', '工作—生活衝突', '數位壓力', '遠距孤獨', '變革疲乏', '外部環境'],
+    datasets: [{
+      label: '影響強度',
+      data: [5.0, 4.5, 4.3, 4.0, 3.8, 3.5],
+      backgroundColor: 'rgba(201,123,61,0.22)',
+      borderColor: '#C97B3D',
+      borderWidth: 2.5,
+      pointBackgroundColor: ['#C97B3D','#D89B5A','#C2A04A','#5D8A4E','#3E6B3E','#8A4B3A'],
+      pointRadius: 6,
+      pointHoverRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1F4D2C',
+        titleColor: '#D89B5A',
+        bodyColor: '#FFFFFF',
+        padding: 10,
+        cornerRadius: 6,
+        callbacks: { label: (ctx) => `強度：${ctx.parsed.r} / 5.0` }
+      }
+    },
+    scales: {
+      r: {
+        min: 0, max: 5,
+        ticks: { stepSize: 1, color: '#6B5C4A', font: { size: 10 }, backdropColor: 'transparent' },
+        grid: { color: 'rgba(184,169,142,0.4)' },
+        angleLines: { color: 'rgba(184,169,142,0.4)' },
+        pointLabels: { color: '#1F4D2C', font: { size: 11, weight: '600' } }
+      }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
