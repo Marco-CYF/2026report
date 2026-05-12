@@ -903,11 +903,11 @@
       2026 臺灣職場<br>敬業度危機分析
     </h1>
     <div class="text-xl lg:text-2xl coral-text font-medium mb-4">從「安靜崩解」到「心理契約違約」</div>
-    <p class="text-[var(--gray)] italic mb-8 text-sm lg:text-base">趨勢分析 · 理論框架 · 管理因應</p>
+    <p class="text-[var(--gray)] italic mb-8 text-sm lg:text-base">趨勢分析 · 理論框架 · 管理因應 </p>
 
-    <!-- 三大核心數字 — 巨型版（首頁視覺主角）-->
+    <!-- 三大核心數字 — -->
     <div class="hero-stats mb-10">
-      <div class="hero-stats-label">本報告的三個關鍵警訊</div>
+      <div class="hero-stats-label">本報告的三個關鍵警訊　·　</div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-3">
         <!-- 21% 全球 -->
         <button type="button" class="hero-stat-card" style="--accent: var(--coral);" onclick="openDetailPanel('stat-21')">
@@ -990,7 +990,7 @@
         <div class="w-10 h-10 rounded-full bg-[var(--green)] text-white flex items-center justify-center font-bold">05</div>
         <div>
           <div class="font-semibold navy-text">文獻資料庫</div>
-          <div class="text-xs text-[var(--gray)]">20 篇文獻 · 可搜尋／篩選</div>
+          <div class="text-xs text-[var(--gray)]">23 篇文獻 · 可搜尋／篩選</div>
         </div>
       </a>
       <a href="#action" class="card p-4 flex items-center gap-3 cursor-pointer">
@@ -1077,7 +1077,7 @@
   <section id="theory" class="mb-16 pt-8 border-t border-[var(--paper)]">
     <div class="text-xs text-[var(--coral)] font-semibold tracking-widest mb-2">SECTION 02</div>
     <h2 class="section-h text-2xl lg:text-3xl mb-6">核心理論框架快速導覽</h2>
-    <p class="text-[var(--gray)] mb-6">解釋敬業度下降的三大理論支柱 — 每一篇文獻都建立在這些基礎之上。<span class="font-semibold coral-text">點擊卡片查看完整理論說明、應用機制與相關文獻。</span></p>
+    <p class="text-[var(--gray)] mb-6">解釋敬業度下降的三大理論支柱 — <span class="font-semibold coral-text">點擊卡片查看完整理論說明、應用機制與相關文獻。</span></p>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       <!-- JD-R -->
@@ -1166,7 +1166,7 @@
           <canvas id="radarChart"></canvas>
         </div>
         <div class="space-y-2 text-sm">
-          <p class="text-[var(--gray)] italic text-xs mb-3">基於 20 篇文獻彙整評估各成因對敬業度的影響強度（1-5 級）</p>
+          <p class="text-[var(--gray)] italic text-xs mb-3">基於 23 篇文獻彙整評估各成因對敬業度的影響強度（1-5 級）</p>
           <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--coral);"></span><span>工作不安全感 — 5.0 ⭐ 最高</span></div>
           <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--amber);"></span><span>工作—生活衝突 — 4.5</span></div>
           <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-full" style="background: var(--gold);"></span><span>數位壓力 — 4.3</span></div>
@@ -1947,7 +1947,7 @@
     </div>
 
     <div class="text-center text-sm text-[var(--gray)] italic pt-4 border-t border-[var(--paper)]">
-      ── 工商心理新興議題 · 2026 碩專一 簡碧慧 黃蘭燕 卓彥夆 感謝師長、學長姐及同學們聆聽 謝謝!──
+      ── 工商心理新興議題 · 2026 · 碩專一 簡碧慧 黃蘭燕 卓彥夆 感謝師長、學長姐及同學們聆聽! 謝謝~ ──
     </div>
   </section>
 
@@ -2512,7 +2512,7 @@ const INSIGHTS = {
     type: "全球趨勢指標",
     summary: "全球員工敬業度跌至 21%，是 2009 年以來首次連續兩年下滑，創 12 年來新低。Gallup 估算全球敬業度每相差 1 個百分點，相當於 2,100 萬名員工。",
     highlights: [
-      "2020：20% → 2021：21% → 2022 峰值 23% → 2024 反轉 → 2025 跌至 21%",
+      "趨勢線：2020：20% → 2021：21% → 2022-2023 高點 23% → 2024：22% → 2025：21%",
       "2024 與 2025 連續兩年下滑，是 Gallup 歷史首次",
       "南亞下降 5 個百分點，是全球跌幅最大區域",
       "「敬業度」定義：熱情參與工作的程度（活力、奉獻、專注三維）",
@@ -2888,7 +2888,7 @@ new Chart(trendCtx, {
     labels: ['2020','2021','2022','2023','2024','2025'],
     datasets: [{
       label: '全球敬業度 (%)',
-      data: [20,21,23,23,21,21],
+      data: [20,21,23,23,22,21],
       borderColor: '#C97B3D',
       backgroundColor: 'rgba(201,123,61,0.10)',
       borderWidth: 3,
